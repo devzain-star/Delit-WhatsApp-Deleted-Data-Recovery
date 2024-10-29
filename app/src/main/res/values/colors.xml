@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="primary">#1DB06F</color>
+    <color name="black">#000000</color>
+    <color name="l_black">#252525</color>
+    <color name="gray">#aaa</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transp_black">#66000000</color>
+    <color name="bg">#f6f8fa</color>
+    <color name="transparent">#00000000</color>
+    <color name="audio_night">#424141</color>
+    <color name="text_lite">#BCBABA</color>
+    <color name="lite_black">#515050</color>
 </resources>

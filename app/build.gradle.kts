@@ -49,4 +49,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Splash API
+    implementation (libs.androidx.core.splashscreen)
+
+    //ViewPager
+    implementation (libs.androidx.viewpager2)
+
+    //sdp
+    implementation (libs.sdp.android)
 }

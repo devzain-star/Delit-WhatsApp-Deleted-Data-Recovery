@@ -23,7 +23,7 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
                 "Delit: Recover deleted WhatsApp chats, images, videos, and statuses."
             )
             1 -> OnboardingFragment.Companion.newInstance(
-                R.drawable.two,
+                R.drawable.one,
                 "Recover Deleted Data",
                 "Retrieve deleted WhatsApp chats, media, and more."
             )

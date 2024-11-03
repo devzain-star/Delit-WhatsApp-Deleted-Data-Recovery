@@ -15,9 +15,10 @@ class OnboardingFragment : Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance(title: String, description: String):OnboardingFragment {
+        fun newInstance(imageResId: Int, title: String, description: String):OnboardingFragment {
             val fragment = OnboardingFragment()
             val args = Bundle()
+            args.putInt("imageResId", imageResId)
             args.putString("title", title)
             args.putString("description", description)
             fragment.arguments = args
@@ -37,11 +38,13 @@ class OnboardingFragment : Fragment() {
         _binding = FragmentOnboardingBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        val imageResId = arguments?.getInt("imageResId")
         val title = arguments?.getString("title")
         val description = arguments?.getString("description")
 
         binding.titleTextView.text = title
         binding.descriptionTextView.text = description
+        imageResId?.let { binding.imageView.setImageResource(it) }
 
         binding.nextButton.setOnClickListener {
             (activity as? OnboardingActivity)?.nextPage()

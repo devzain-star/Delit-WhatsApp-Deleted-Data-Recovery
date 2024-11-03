@@ -10,29 +10,29 @@
         android:id="@+id/imageView"
         android:layout_width="@dimen/_300sdp"
         android:layout_height="@dimen/_300sdp"
-        android:layout_marginTop="@dimen/_50sdp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:contentDescription="@string/description"
         android:padding="16dp"
-        android:src="@drawable/one"
-        android:contentDescription="@string/description" />
+        android:src="@drawable/one" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
         android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        >
+        android:paddingEnd="@dimen/_20sdp">
+
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:fontFamily="@font/bold"
+            android:gravity="center"
             android:text="@string/title"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/descriptionTextView"
@@ -40,22 +40,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleTextView"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:fontFamily="@font/regular"
+            android:gravity="center"
             android:text="@string/description"
             android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/descriptionTextView"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/btn_bg"
+            android:text="@string/next"
+            android:textColor="@color/white" />
     </RelativeLayout>
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/nextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:background="@drawable/btn_bg"
-        android:text="@string/next"
-        android:textColor="@color/white" />
 
 
 </RelativeLayout>

@@ -2,10 +2,14 @@ package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
@@ -32,33 +36,41 @@ class OnboardingActivity : BaseActivity() {
         binding.viewPager.adapter = onboardingAdapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->{
-            tab.setIcon(R.drawable.circle_unselected)
+            tab.customView = createTabDot(binding.tabLayout, position == 0)
         }}.attach()
 
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                // Handle scrolling here if needed
+        for (i in 0 until binding.tabLayout.tabCount){
+            val tab = binding.tabLayout.getTabAt(i)
+            if (tab != null && tab.icon != null) {
+                tab.view.setPadding(10, 0, 10, 0)
             }
+        }
 
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                for (i in 0 until binding.tabLayout.tabCount){
-                    val tab = binding.tabLayout.getTabAt(i)
-                    if(tab != null){
-                        if(i == position){
-                            tab.setIcon(R.drawable.circle_selected)
-                        }else{
-                            tab.setIcon(R.drawable.circle_unselected)
-                        }
-                    }
-                }
+                setUpTabDots(binding.tabLayout, position)
             }
-
         })
 
-
     }
+
+    private fun createTabDot(tabLayout: TabLayout, isSelected: Boolean): View {
+        val tabDot = LayoutInflater.from(this).inflate(R.layout.tab_dot, tabLayout, false) as ImageView
+        tabDot.setImageResource(if (isSelected) R.drawable.circle_selected else R.drawable.circle_unselected)
+        return tabDot
+    }
+
+    private fun setUpTabDots(tabLayout: TabLayout, selectedPosition: Int) {
+        for (i in 0 until tabLayout.tabCount) {
+            val tab = tabLayout.getTabAt(i)
+            if (tab != null && tab.customView is ImageView) {
+                val tabDot = tab.customView as ImageView
+                tabDot.setImageResource(if (i == selectedPosition) R.drawable.circle_selected else R.drawable.circle_unselected)
+            }
+        }
+    }
+
 
     fun nextPage() {
         val nextItem = binding.viewPager.currentItem + 1

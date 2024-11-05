@@ -17,11 +17,15 @@
         android:id="@+id/tabLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/transparent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_60sdp"
-        android:visibility="gone"
+        android:visibility="visible"
+
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorHeight="0dp"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/primary"
         />
 
 </RelativeLayout>

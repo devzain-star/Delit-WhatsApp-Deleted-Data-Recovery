@@ -1,9 +1,11 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
@@ -29,10 +31,33 @@ class OnboardingActivity : BaseActivity() {
         onboardingAdapter = OnboardingAdapter(this)
         binding.viewPager.adapter = onboardingAdapter
 
-        // Setup TabLayout with ViewPager2
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            // Optionally customize tab title if needed
-        }.attach()
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->{
+            tab.setIcon(R.drawable.circle_unselected)
+        }}.attach()
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                // Handle scrolling here if needed
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                for (i in 0 until binding.tabLayout.tabCount){
+                    val tab = binding.tabLayout.getTabAt(i)
+                    if(tab != null){
+                        if(i == position){
+                            tab.setIcon(R.drawable.circle_selected)
+                        }else{
+                            tab.setIcon(R.drawable.circle_unselected)
+                        }
+                    }
+                }
+            }
+
+        })
+
+
     }
 
     fun nextPage() {
@@ -42,5 +67,10 @@ class OnboardingActivity : BaseActivity() {
         } else {
             // Finish onboarding and move to the main activity
         }
+    }
+
+    fun homePage() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

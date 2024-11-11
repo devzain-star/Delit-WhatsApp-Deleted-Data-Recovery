@@ -14,4 +14,12 @@
     <string name="pref_is_append_watomatic_attribution" translatable="false">pref_is_append_watomatic_attribution</string>
     <string name="pref_show_foreground_service_notification" translatable="false">pref_show_foreground_service_notification</string>
 
+    <string name="status">Status</string>
+    <string name="downloads">Downloads</string>
+    <string name="tap_to_see">Tap to see</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="chats">Chats</string>
+    <string name="status_saved">Status Saved</string>
+    <string name="total_downloads">Total Downloads</string>
 </resources>

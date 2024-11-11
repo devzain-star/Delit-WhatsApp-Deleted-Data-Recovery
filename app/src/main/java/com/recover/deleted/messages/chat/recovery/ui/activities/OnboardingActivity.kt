@@ -15,6 +15,7 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityOnboardingBinding
+import com.recover.deleted.messages.chat.recovery.services.DataService
 import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 class OnboardingActivity : BaseActivity() {
@@ -86,6 +87,7 @@ class OnboardingActivity : BaseActivity() {
         prefManager.setFirstTime(false)
         startActivity(Intent(this, MainActivity::class.java))
         startService(Intent(this, NotificationForegroundService::class.java))
+        startService(Intent(this, DataService::class.java))
         finish()
     }
 }

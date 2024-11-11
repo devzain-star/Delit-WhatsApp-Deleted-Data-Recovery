@@ -10,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivitySplashBinding
+import com.recover.deleted.messages.chat.recovery.services.DataService
 import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 @SuppressLint("CustomSplashScreen")
@@ -43,6 +44,7 @@ class SplashActivity : BaseActivity() {
         } else{
             startActivity(Intent(this, MainActivity::class.java))
             startService(Intent(this, NotificationForegroundService::class.java))
+            startService(Intent(this, DataService::class.java))
         }
         finish()
     }

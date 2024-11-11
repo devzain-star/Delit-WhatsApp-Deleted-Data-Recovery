@@ -6,4 +6,12 @@
     <string name="title">Title</string>
     <string name="next">Next</string>
     <string name="grant_permission">Grant Permission</string>
+
+    <!-- keys and app internal strings -->
+    <string name="key_pref_app_language" translatable="false">pref_app_language</string>
+    <string name="pref_show_notification_replied_msg" translatable="false">pref_show_notification_replied_msg</string>
+    <string name="pref_auto_start_permission" translatable="false">pref_auto_start_permission</string>
+    <string name="pref_is_append_watomatic_attribution" translatable="false">pref_is_append_watomatic_attribution</string>
+    <string name="pref_show_foreground_service_notification" translatable="false">pref_show_foreground_service_notification</string>
+
 </resources>

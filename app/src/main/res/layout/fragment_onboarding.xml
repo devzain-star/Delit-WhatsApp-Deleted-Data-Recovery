@@ -9,15 +9,18 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/_300sdp"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_50sdp"
         android:contentDescription="@string/description"
         android:padding="16dp"
-        android:src="@drawable/one" />
+        android:src="@drawable/one"
+        android:layout_above="@+id/bottomLayout"
+        />
 
 
     <RelativeLayout
+        android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">

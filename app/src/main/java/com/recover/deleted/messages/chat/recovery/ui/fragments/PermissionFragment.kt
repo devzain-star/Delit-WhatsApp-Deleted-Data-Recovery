@@ -39,9 +39,6 @@ class PermissionFragment : Fragment() {
         binding.titleTextView.text = title
         binding.descriptionTextView.text = description
 
-        binding.grantPermissionButton.setOnClickListener {
-            requestPermission(permissionType)
-        }
 
         binding.nextButton.setOnClickListener {
             (activity as? OnboardingActivity)?.nextPage()

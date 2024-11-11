@@ -46,6 +46,10 @@ class OnboardingFragment : Fragment() {
         binding.descriptionTextView.text = description
         imageResId?.let { binding.imageView.setImageResource(it) }
 
+        if(title.equals("You're Ready!"))
+            binding.nextButton.setText("Get Started")
+
+
         binding.nextButton.setOnClickListener {
             (activity as? OnboardingActivity)?.nextPage()
         }

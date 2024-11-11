@@ -18,34 +18,34 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OnboardingFragment.Companion.newInstance(
-                R.drawable.one,
-                "Welcome",
-                "Delit: Recover deleted WhatsApp chats, images, videos, and statuses."
+                R.drawable.welcome,
+                "Welcome 👋🏼",
+                "Recover deleted WhatsApp chats, images, videos, and statuses."
             )
             1 -> OnboardingFragment.Companion.newInstance(
                 R.drawable.one,
-                "Recover Deleted Data",
+                "Recover Data",
                 "Retrieve deleted WhatsApp chats, media, and more."
             )
             2 -> OnboardingFragment.Companion.newInstance(
                 R.drawable.one,
-                "Download WhatsApp Statuses",
+                "Download Status",
                 "You can now download and save WhatsApp statuses."
             )
             3 -> PermissionFragment.Companion.newInstance(
-                "Storage Access",
+                "Access Storage",
                 "We need access to your device storage.",
-                READ_EXTERNAL_STORAGE
+                "storage"
             )
             4 -> PermissionFragment.Companion.newInstance(
                 "Background Access",
                 "Allow the app to run in the background.",
-                REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                "background"
             )
             5 -> PermissionFragment.Companion.newInstance(
-                "Notifications",
+                "Allow Notifications",
                 "Stay updated with recovery notifications.",
-                POST_NOTIFICATIONS
+                "notification"
             )
             else -> OnboardingFragment.Companion.newInstance(
                 R.drawable.one,

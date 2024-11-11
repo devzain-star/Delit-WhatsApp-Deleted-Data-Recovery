@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.databinding.FragmentPermissionBinding
+import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 import com.recover.deleted.messages.chat.recovery.ui.activities.OnboardingActivity
 
 class PermissionFragment : Fragment() {
@@ -148,6 +149,9 @@ class PermissionFragment : Fragment() {
         if (!isNotificationAccessGranted()) {
             // Show a dialog to inform the user
             showNotificationAccessDialog()
+        }else{
+            val serviceIntent = Intent(requireContext(), NotificationForegroundService::class.java)
+            requireContext().startService(serviceIntent)
         }
     }
 

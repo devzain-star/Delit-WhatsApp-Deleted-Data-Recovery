@@ -15,6 +15,7 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityOnboardingBinding
+import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 class OnboardingActivity : BaseActivity() {
 
@@ -77,12 +78,14 @@ class OnboardingActivity : BaseActivity() {
         if (nextItem < onboardingAdapter.itemCount) {
             binding.viewPager.currentItem = nextItem
         } else {
-            // Finish onboarding and move to the main activity
+            homePage()
         }
     }
 
     fun homePage() {
+        prefManager.setFirstTime(false)
         startActivity(Intent(this, MainActivity::class.java))
+        startService(Intent(this, NotificationForegroundService::class.java))
         finish()
     }
 }

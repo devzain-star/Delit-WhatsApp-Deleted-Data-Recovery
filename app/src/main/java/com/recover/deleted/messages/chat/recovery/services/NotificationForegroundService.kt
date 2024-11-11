@@ -38,7 +38,7 @@ class NotificationForegroundService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Service Running")
             .setContentText("Delit's service is running.")
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.notification_app_logo)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
     }

@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivitySplashBinding
+import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
@@ -18,6 +19,9 @@ class SplashActivity : BaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         installSplashScreen()
+
+        val serviceIntent = Intent(this, NotificationForegroundService::class.java)
+        startService(serviceIntent)
 
         startActivity(Intent(this, OnboardingActivity::class.java))
         finish()

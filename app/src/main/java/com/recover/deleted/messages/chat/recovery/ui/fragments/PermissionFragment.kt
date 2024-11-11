@@ -6,6 +6,7 @@ import android.Manifest.permission.READ_MEDIA_AUDIO
 import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VIDEO
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.AlertDialog
 import android.app.NotificationManager
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -22,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.databinding.FragmentPermissionBinding
 import com.recover.deleted.messages.chat.recovery.ui.activities.OnboardingActivity
@@ -142,21 +144,30 @@ class PermissionFragment : Fragment() {
     private fun requestNotificationPermission() {
         Log.d(TAG, "requestNotificationPermission: Called")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Check if notification permission is already granted
-            val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            if (!notificationManager.isNotificationPolicyAccessGranted) {
-                // If not granted, guide the user to settings
-                promptForNotificationAccess()
-            }
-        }
 
+        if (!isNotificationAccessGranted()) {
+            // Show a dialog to inform the user
+            showNotificationAccessDialog()
+        }
     }
 
-    private fun promptForNotificationAccess() {
-        // Ask user to enable notification access in settings
-        val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-        startActivity(intent)
+    // Check if the notification listener access is granted
+    private fun isNotificationAccessGranted(): Boolean {
+        val enabledPackages = NotificationManagerCompat.getEnabledListenerPackages(requireContext())
+        return enabledPackages.contains(requireContext().packageName)
+    }
+
+    private fun showNotificationAccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Notification Access Required")
+            .setMessage("To receive notifications, please enable access in settings.")
+            .setPositiveButton("Go to Settings") { _, _ ->
+                // Open the notification listener settings
+                val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     companion object {

@@ -18,12 +18,12 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> OnboardingFragment.Companion.newInstance(
-                R.drawable.welcome,
+                R.drawable.one,
                 "Welcome 👋🏼",
                 "Recover deleted WhatsApp chats, images, videos, and statuses."
             )
             1 -> OnboardingFragment.Companion.newInstance(
-                R.drawable.one,
+                R.drawable.recover,
                 "Recover Data",
                 "Retrieve deleted WhatsApp chats, media, and more."
             )

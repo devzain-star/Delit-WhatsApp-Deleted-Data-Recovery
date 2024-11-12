@@ -2,7 +2,11 @@ package com.recover.deleted.messages.chat.recovery.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.utils.PreferencesManager
 import com.recover.deleted.messages.chat.recovery.utils.Screens
 
@@ -18,4 +22,13 @@ open class BaseActivity: AppCompatActivity() {
         prefManager = PreferencesManager(activity)
 
     }
+
+    fun setHeader(title: String) {
+        try {
+            findViewById<TextView>(R.id.title).text = title
+            findViewById<ImageView>(R.id.back).setOnClickListener(View.OnClickListener { onBackPressed() })
+        } catch (_: Exception) {
+        }
+    }
+
 }

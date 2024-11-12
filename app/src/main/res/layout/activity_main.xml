@@ -168,6 +168,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <RelativeLayout
+                android:id="@+id/chats"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="15dp"
@@ -236,6 +237,7 @@
                 android:minHeight="@dimen/_240sdp" />
 
             <RelativeLayout
+                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="15dp"
@@ -303,6 +305,7 @@
                 android:minHeight="@dimen/_240sdp" />
 
             <RelativeLayout
+                android:id="@+id/videos"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="15dp"
@@ -370,6 +373,7 @@
                 android:minHeight="@dimen/_240sdp" />
 
             <RelativeLayout
+                android:id="@+id/images"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="15dp"

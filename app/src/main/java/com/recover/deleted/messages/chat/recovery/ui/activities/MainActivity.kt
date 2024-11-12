@@ -1,6 +1,7 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,11 @@ class MainActivity : BaseActivity() {
     }
 
     fun init(){
+        binding.fabBtn.setOnClickListener(this)
+        binding.chats.setOnClickListener(this)
+        binding.status.setOnClickListener(this)
+        binding.videos.setOnClickListener(this)
+        binding.images.setOnClickListener(this)
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(calendar.time)
@@ -45,6 +51,17 @@ class MainActivity : BaseActivity() {
             binding.imageView3.setImageResource(R.drawable.sun) // Daytime (6 AM to 6 PM)
         } else {
             binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime (6 PM to 6 AM)
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.fabBtn -> screens.showCustomScreen(QuickSendActivity::class.java)
+            R.id.chats -> screens.showCustomScreen(ChatsActivity::class.java)
+            R.id.status -> screens.showCustomScreen(StatusActivity::class.java)
+            R.id.videos -> screens.showCustomScreen(VideosActivity::class.java)
+            R.id.images -> screens.showCustomScreen(ImagesActivity::class.java)
+
         }
     }
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.activities.MainActivity">
 
     <!--    header -->
     <RelativeLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp">
@@ -37,7 +37,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_layout"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +71,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/regular"
-                        android:text="30 Apr 2024"
+                        android:text="@string/demo_date"
                         android:textSize="@dimen/_11sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="Monday"
+                        android:text="@string/day"
                         android:textSize="@dimen/_16sdp"
                         app:layout_constraintEnd_toEndOf="@+id/date"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -111,7 +113,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="0"
+                        android:text="@string/zero"
                         android:textSize="@dimen/_15sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +128,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="0"
+                        android:text="@string/zero"
                         android:textSize="@dimen/_15sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/blocked"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -182,6 +184,7 @@
                     app:tint="@color/primary"
                     android:padding="10dp"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/description"
                     />
 
                 <LinearLayout
@@ -198,14 +201,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="Recovered Chats"
+                        android:text="@string/recovered_chats"
                         android:textSize="14sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
-                        android:text="View and restore deleted WhatsApp chats"
+                        android:text="@string/view_and_restore_deleted_whatsapp_chats"
                         android:textSize="@dimen/_10sdp"/>
 
                 </LinearLayout>
@@ -248,8 +251,8 @@
                     android:src="@drawable/story"
                     app:tint="@color/primary"
                     android:padding="10dp"
-                    app:backgroundTint="@color/primary"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/description"
                     />
 
                 <LinearLayout
@@ -265,14 +268,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="Status"
+                        android:text="@string/status"
                         android:textSize="14sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
-                        android:text="Access recent status updates from WhatsApp"
+                        android:text="@string/access_recent_status_updates_from_whatsapp"
                         android:textSize="@dimen/_10sdp"/>
 
                 </LinearLayout>
@@ -316,6 +319,7 @@
                     app:tint="@color/primary"
                     android:padding="10dp"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/description"
                     />
 
                 <LinearLayout
@@ -331,14 +335,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="Deleted Videos"
+                        android:text="@string/deleted_videos"
                         android:textSize="14sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
-                        android:text="Browse WhatsApp deleted videos"
+                        android:text="@string/browse_whatsapp_deleted_videos"
                         android:textSize="@dimen/_10sdp"/>
 
                 </LinearLayout>
@@ -382,6 +386,7 @@
                     app:tint="@color/primary"
                     android:padding="10dp"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/description"
                     />
 
                 <LinearLayout
@@ -397,14 +402,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
-                        android:text="Deleted Images"
+                        android:text="@string/deleted_images"
                         android:textSize="14sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
-                        android:text="Find WhatsApp deleted images"
+                        android:text="@string/find_whatsapp_deleted_images"
                         android:textSize="@dimen/_10sdp"/>
 
                 </LinearLayout>
@@ -429,4 +434,17 @@
     </ScrollView>
 
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/primary"
+        android:src="@drawable/send"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription"
+        />
+
+</RelativeLayout>

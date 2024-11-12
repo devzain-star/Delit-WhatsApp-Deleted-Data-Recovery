@@ -36,8 +36,15 @@ class MainActivity : BaseActivity() {
 
         val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
         val formattedDay = dayFormat.format(calendar.time)
-
         binding.date.text = formattedDate
         binding.day.text = formattedDay
+
+        // Get the current hour of the day
+        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+        if (currentHour in 6..18) {
+            binding.imageView3.setImageResource(R.drawable.sun) // Daytime (6 AM to 6 PM)
+        } else {
+            binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime (6 PM to 6 AM)
+        }
     }
 }

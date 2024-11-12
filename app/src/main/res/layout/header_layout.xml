@@ -22,7 +22,6 @@
         android:fontFamily="@font/bold"
         android:gravity="center"
         android:text="@string/title"
-        android:layout_toEndOf="@+id/back"
         android:textSize="@dimen/_12sdp" />
 
 </RelativeLayout>

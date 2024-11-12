@@ -1,9 +1,11 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.RequiresApi
+
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.recover.deleted.messages.chat.recovery.R
@@ -12,10 +14,12 @@ import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBindin
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.time.LocalTime
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +34,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         init()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun init(){
         binding.fabBtn.setOnClickListener(this)
         binding.chats.setOnClickListener(this)
@@ -51,6 +56,18 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             binding.imageView3.setImageResource(R.drawable.sun) // Daytime (6 AM to 6 PM)
         } else {
             binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime (6 PM to 6 AM)
+        }
+
+        // Get the current time
+        val currentTime = LocalTime.now()
+        val morningTime = LocalTime.of(6, 0) // 6 AM
+        val eveningTime = LocalTime.of(18, 0) // 6 PM
+
+        // Set icon based on the time of day
+        if (currentTime.isAfter(morningTime) && currentTime.isBefore(eveningTime)) {
+            binding.imageView3.setImageResource(R.drawable.sun) // Daytime
+        } else {
+            binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime
         }
     }
 

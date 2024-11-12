@@ -34,7 +34,6 @@ class MainActivity : BaseActivity() {
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(calendar.time)
 
-        // Format day as "Monday"
         val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
         val formattedDay = dayFormat.format(calendar.time)
 

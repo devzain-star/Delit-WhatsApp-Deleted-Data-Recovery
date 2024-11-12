@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_setting"
-            app:tint="@color/black"
+            app:tint="@color/primary"
             tools:ignore="ContentDescription" />
 
     </RelativeLayout>
@@ -94,13 +94,17 @@
                         android:id="@+id/imageView3"
                         android:layout_width="@dimen/_17sdp"
                         android:layout_height="@dimen/_17sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:contentDescription="@string/description"
                         app:layout_constraintBottom_toBottomOf="@+id/day"
                         app:layout_constraintEnd_toStartOf="@+id/day"
                         app:layout_constraintTop_toBottomOf="@+id/date"
                         app:layout_constraintVertical_bias="1.0"
-                        app:srcCompat="@drawable/house_day" />
+                        app:srcCompat="@drawable/thin_moon"
+                        app:tint="@color/primary"
+                        android:rotation="260"
+                        />
 
                     <TextView
                         android:id="@+id/blocked"
@@ -135,7 +139,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
                         android:text="@string/status_saved"
-
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -161,6 +164,264 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/icChats"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_chat"
+                    app:tint="@color/primary"
+                    android:padding="10dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/chatLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@+id/icChats"
+                    android:layout_toStartOf="@+id/angle_chat"
+                    android:layout_centerVertical="true"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:text="Recovered Chats"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/regular"
+                        android:text="View and restore deleted WhatsApp chats"
+                        android:textSize="@dimen/_10sdp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/angle_chat"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:padding="@dimen/_3sdp"
+                    android:src="@drawable/angle_right"
+                    app:tint="@color/primary"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:background="@color/grey_light"
+                android:minHeight="@dimen/_240sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/icStatus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/story"
+                    app:tint="@color/primary"
+                    android:padding="10dp"
+                    app:backgroundTint="@color/primary"
+                    android:layout_centerVertical="true"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@+id/icStatus"
+                    android:layout_toStartOf="@+id/angle_status"
+                    android:layout_centerVertical="true"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:text="Status"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/regular"
+                        android:text="Access recent status updates from WhatsApp"
+                        android:textSize="@dimen/_10sdp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/angle_status"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:padding="@dimen/_3sdp"
+                    android:src="@drawable/angle_right"
+                    app:tint="@color/primary"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:background="@color/grey_light"
+                android:minHeight="@dimen/_240sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/icVideos"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_video"
+                    app:tint="@color/primary"
+                    android:padding="10dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@+id/icVideos"
+                    android:layout_toStartOf="@+id/angle_videos"
+                    android:layout_centerVertical="true"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:text="Deleted Videos"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/regular"
+                        android:text="Browse WhatsApp deleted videos"
+                        android:textSize="@dimen/_10sdp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/angle_videos"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:padding="@dimen/_3sdp"
+                    android:src="@drawable/angle_right"
+                    app:tint="@color/primary"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:background="@color/grey_light"
+                android:minHeight="@dimen/_240sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/icImages"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_image"
+                    app:tint="@color/primary"
+                    android:padding="10dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@+id/icImages"
+                    android:layout_toStartOf="@+id/angle_images"
+                    android:layout_centerVertical="true"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:text="Deleted Images"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/regular"
+                        android:text="Find WhatsApp deleted images"
+                        android:textSize="@dimen/_10sdp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/angle_images"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:padding="@dimen/_3sdp"
+                    android:src="@drawable/angle_right"
+                    app:tint="@color/primary"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
 
 
         </LinearLayout>

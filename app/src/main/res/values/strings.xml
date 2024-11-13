@@ -30,4 +30,6 @@
     <string name="browse_whatsapp_deleted_videos">Browse WhatsApp deleted videos</string>
     <string name="deleted_images">Deleted Images</string>
     <string name="find_whatsapp_deleted_images">Find WhatsApp deleted images</string>
+    <string name="sorry_nothing_found">Sorry! Nothing Found</string>
+
 </resources>

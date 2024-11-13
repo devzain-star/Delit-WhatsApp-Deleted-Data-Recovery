@@ -28,7 +28,7 @@
         android:layout_marginEnd="40dp"
         android:fontFamily="@font/regular"
         android:gravity="center"
-        android:text="Open a chat on WhatsApp with an \nunsaved contact."
+        android:text="@string/open_a_chat_on_whatsapp_with_an_unsaved_contact"
         android:textSize="@dimen/_10sdp" />
 
     <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:hint="Phone No"
+                android:hint="@string/phone_no"
                 app:expandedHintEnabled="false"
                 app:hintEnabled="false">
 
@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/regular"
-                    android:hint="Phone no"
+                    android:hint="@string/phone_no"
                     android:inputType="phone"
                     android:textSize="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +73,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/_80sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
@@ -86,9 +85,9 @@
                     android:id="@+id/bodyEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/_80sdp"
+                    android:minHeight="@dimen/_100sdp"
                     android:fontFamily="@font/regular"
-                    android:hint="Enter message"
+                    android:hint="@string/enter_message"
                     android:inputType="textMultiLine"
                     android:gravity="start"
                     android:textSize="@dimen/_10sdp" />
@@ -125,7 +124,7 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/bold"
             android:gravity="center"
-            android:text="Send Messgae"
+            android:text="@string/send_message"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/white"
             />

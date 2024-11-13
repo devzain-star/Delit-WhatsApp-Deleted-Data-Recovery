@@ -31,5 +31,9 @@
     <string name="deleted_images">Deleted Images</string>
     <string name="find_whatsapp_deleted_images">Find WhatsApp deleted images</string>
     <string name="sorry_nothing_found">Sorry! Nothing Found</string>
+    <string name="enter_message">Enter message</string>
+    <string name="send_message">Send Message</string>
+    <string name="phone_no">Phone no</string>
+    <string name="open_a_chat_on_whatsapp_with_an_unsaved_contact">Open a chat on WhatsApp with an \nunsaved contact.</string>
 
 </resources>

@@ -68,6 +68,16 @@ class DataService: Service() {
         if (!dirDownloadVideos.exists()) dirDownloadVideos.mkdirs()
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        Thread { getWhatsappStatus() }.start()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(applicationContext, DataServiceAboveTenVersion::class.java))
+            startService(Intent(applicationContext, DataServiceAboveTenVersion::class.java))
+        }
+        return START_NOT_STICKY
+    }
+
     //Whatsapp Status
     fun getWhatsappStatus() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -93,7 +103,7 @@ class DataService: Service() {
                             }
                         }
                     }
-                    whatsappStatusList.postValue(cloneList)
+                    whatsapp_status.postValue(cloneList)
                 }
             } catch (_: Exception) {
             }
@@ -118,7 +128,7 @@ class DataService: Service() {
                     }
                 }
                 //    Log.d(TAG, "size is: " + cloneList.size)
-                whatsappStatusList.postValue(cloneList)
+                whatsapp_status.postValue(cloneList)
             } catch (_: Exception) {
             }
         }

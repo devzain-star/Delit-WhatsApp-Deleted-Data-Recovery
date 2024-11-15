@@ -1,6 +1,7 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -85,9 +86,18 @@ class OnboardingActivity : BaseActivity() {
 
     fun homePage() {
         prefManager.setFirstTime(false)
+        startDataService()
         startActivity(Intent(this, MainActivity::class.java))
-        startService(Intent(this, NotificationForegroundService::class.java))
-        startService(Intent(this, DataService::class.java))
         finish()
+    }
+
+    private fun startDataService(){
+        startService(Intent(this, NotificationForegroundService::class.java))
+        val serviceIntent = Intent(this, DataService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        }else{
+            startService(serviceIntent)
+        }
     }
 }

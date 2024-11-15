@@ -2,6 +2,7 @@ package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -42,10 +43,19 @@ class SplashActivity : BaseActivity() {
         if (prefManager.isFirstTime()) {
             startActivity(Intent(this, OnboardingActivity::class.java))
         } else{
+            startDataService()
             startActivity(Intent(this, MainActivity::class.java))
-            startService(Intent(this, NotificationForegroundService::class.java))
-            startService(Intent(this, DataService::class.java))
         }
         finish()
+    }
+
+    private fun startDataService(){
+        startService(Intent(this, NotificationForegroundService::class.java))
+        val serviceIntent = Intent(this, DataService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        }else{
+            startService(serviceIntent)
+        }
     }
 }

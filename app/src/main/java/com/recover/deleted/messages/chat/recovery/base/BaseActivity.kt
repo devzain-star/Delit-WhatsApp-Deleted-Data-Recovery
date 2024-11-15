@@ -14,6 +14,7 @@ open class BaseActivity: AppCompatActivity() {
     lateinit var activity: Activity
     lateinit var screens: Screens
     lateinit var prefManager: PreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

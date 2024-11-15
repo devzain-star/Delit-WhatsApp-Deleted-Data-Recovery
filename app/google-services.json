@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "76319463662",
+    "project_id": "delit---recover-message",
+    "storage_bucket": "delit---recover-message.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76319463662:android:8bd5119bc3167fae48bbff",
+        "android_client_info": {
+          "package_name": "com.recover.deleted.messages.chat.recovery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdPeuFhpkZHdrM7GzSHwLqFvnZRZTAwCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

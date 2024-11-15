@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.recover.deleted.messages.chat.recovery" />
+                  <option name="mobileSdkAppId" value="1:76319463662:android:8bd5119bc3167fae48bbff" />
+                  <option name="projectId" value="delit---recover-message" />
+                  <option name="projectNumber" value="76319463662" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

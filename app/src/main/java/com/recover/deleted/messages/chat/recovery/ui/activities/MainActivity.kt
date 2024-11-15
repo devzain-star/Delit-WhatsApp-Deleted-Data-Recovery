@@ -8,6 +8,9 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
@@ -18,6 +21,7 @@ import java.time.LocalTime
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
+    private lateinit var analytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +34,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        // Initialize Firebase Analytics
+        analytics = Firebase.analytics
         init()
     }
 

@@ -37,15 +37,15 @@ class PermissionFragment : Fragment() {
     private val TAG = "PermissionFragment"
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPermissionBinding.inflate(inflater, container, false)
-
+        val imageResId = arguments?.getInt("imageResId")
         val title = arguments?.getString("title")
         val description = arguments?.getString("description")
         permissionType = arguments?.getString("permissionType") ?: ""
 
+        imageResId?.let { binding.imageView.setImageResource(it) }
         binding.titleTextView.text = title
         binding.descriptionTextView.text = description
 
@@ -53,7 +53,7 @@ class PermissionFragment : Fragment() {
         binding.nextButton.setOnClickListener {
             (activity as? OnboardingActivity)?.nextPage()
             requestPermission(permissionType)
-            Log.d(TAG, "Clicked next button with permission: "+permissionType)
+            Log.d(TAG, "Clicked next button with permission: " + permissionType)
         }
 
         return binding.root
@@ -72,10 +72,12 @@ class PermissionFragment : Fragment() {
                 requestStoragePermission()
                 requestNotificationPermission()
             }
+
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
                 // For API 30 to API 32 (Android 11 to 12)
                 requestStoragePermission()  // External storage access
             }
+
             else -> {
                 // For API 24 to API 29
                 requestStoragePermission()
@@ -95,34 +97,31 @@ class PermissionFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // API 33+ request media access permissions
             if (ActivityCompat.checkSelfPermission(
-                    requireContext(), READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    requireContext(), READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    requireContext(), READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    requireContext(), READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    requireContext(), READ_MEDIA_VIDEO
+                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    requireContext(), READ_MEDIA_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(
-                        READ_MEDIA_IMAGES,
-                        READ_MEDIA_VIDEO,
-                        READ_MEDIA_AUDIO
-                    ),
-                    100
+                    requireActivity(), arrayOf(
+                        READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO
+                    ), 100
                 )
             }
         } else {
             // API 24 to API 32
             if (ActivityCompat.checkSelfPermission(
-                    requireContext(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    requireContext(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requireContext(), READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    requireContext(), WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(
-                        READ_EXTERNAL_STORAGE,
-                        WRITE_EXTERNAL_STORAGE
-                    ),
-                    100
+                    requireActivity(), arrayOf(
+                        READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+                    ), 100
                 )
             }
         }
@@ -149,7 +148,7 @@ class PermissionFragment : Fragment() {
         if (!isNotificationAccessGranted()) {
             // Show a dialog to inform the user
             showNotificationAccessDialog()
-        }else{
+        } else {
             val serviceIntent = Intent(requireContext(), NotificationForegroundService::class.java)
             requireContext().startService(serviceIntent)
         }
@@ -162,22 +161,22 @@ class PermissionFragment : Fragment() {
     }
 
     private fun showNotificationAccessDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Notification Access Required")
+        AlertDialog.Builder(requireContext()).setTitle("Notification Access Required")
             .setMessage("To receive notifications, please enable access in settings.")
             .setPositiveButton("Go to Settings") { _, _ ->
                 // Open the notification listener settings
                 val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                 startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+            }.setNegativeButton("Cancel", null).show()
     }
 
     companion object {
-        fun newInstance(title: String, description: String, permissionType: String): PermissionFragment {
+        fun newInstance(
+            imageResId: Int, title: String, description: String, permissionType: String
+        ): PermissionFragment {
             val fragment = PermissionFragment()
             val args = Bundle()
+            args.putInt("imageResId", imageResId)
             args.putString("title", title)
             args.putString("description", description)
             args.putString("permissionType", permissionType)

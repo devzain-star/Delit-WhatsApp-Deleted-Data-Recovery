@@ -33,16 +33,19 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
                 "You can now download and save WhatsApp statuses."
             )
             3 -> PermissionFragment.Companion.newInstance(
+                R.drawable.storage,
                 "Access Storage",
                 "We need access to your device storage.",
                 "storage"
             )
             4 -> PermissionFragment.Companion.newInstance(
+                R.drawable.background,
                 "Background Access",
                 "Allow the app to run in the background.",
                 "background"
             )
             5 -> PermissionFragment.Companion.newInstance(
+                R.drawable.allow_notification,
                 "Allow Notifications",
                 "Stay updated with recovery notifications.",
                 "notification"

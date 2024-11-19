@@ -86,7 +86,7 @@ class OnboardingActivity : BaseActivity() {
 
     fun homePage() {
         prefManager.setFirstTime(false)
-        startDataService()
+        //startDataService()
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

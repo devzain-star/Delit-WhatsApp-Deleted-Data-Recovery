@@ -20,7 +20,7 @@
     <string name="chats">Chats</string>
     <string name="status_saved">Status Saved</string>
     <string name="total_downloads">Total Downloads</string>
-    <string name="demo_date">30 Apr 2024</string>
+    <string name="demo_date">November 6 \n2024</string>
     <string name="day">Monday</string>
     <string name="zero">0</string>
     <string name="recovered_chats">Recovered Chats</string>
@@ -35,5 +35,6 @@
     <string name="send_message">Send Message</string>
     <string name="phone_no">Phone no</string>
     <string name="open_a_chat_on_whatsapp_with_an_unsaved_contact">Open a chat on WhatsApp with an \nunsaved contact.</string>
+    <string name="status_saver">Status Saver</string>
 
 </resources>

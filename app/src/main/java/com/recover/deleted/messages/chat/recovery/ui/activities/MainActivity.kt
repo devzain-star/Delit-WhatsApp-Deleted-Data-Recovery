@@ -1,5 +1,6 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -15,9 +16,11 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -39,6 +42,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         init()
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     fun init(){
         binding.fabBtn.setOnClickListener(this)
@@ -46,34 +50,34 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         binding.status.setOnClickListener(this)
         binding.videos.setOnClickListener(this)
         binding.images.setOnClickListener(this)
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        val formattedDate = dateFormat.format(calendar.time)
 
-        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-        val formattedDay = dayFormat.format(calendar.time)
-        binding.date.text = formattedDate
-        binding.day.text = formattedDay
-
-        // Get the current hour of the day
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        if (currentHour in 6..18) {
-            binding.imageView3.setImageResource(R.drawable.sun) // Daytime (6 AM to 6 PM)
-        } else {
-            binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime (6 PM to 6 AM)
-        }
-
-        // Get the current time
+        // Get the current date
+        val currentDate = LocalDate.now()
         val currentTime = LocalTime.now()
-        val morningTime = LocalTime.of(6, 0) // 6 AM
-        val eveningTime = LocalTime.of(18, 0) // 6 PM
+        val currentHour = currentTime.hour
 
-        // Set icon based on the time of day
-        if (currentTime.isAfter(morningTime) && currentTime.isBefore(eveningTime)) {
-            binding.imageView3.setImageResource(R.drawable.sun) // Daytime
-        } else {
-            binding.imageView3.setImageResource(R.drawable.thin_moon) // Nighttime
+        // Format the day and date
+        val dayFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
+        val dateFormatter = DateTimeFormatter.ofPattern("MMMM d", Locale.getDefault())
+        val yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.getDefault())
+
+        val dayText = currentDate.format(dayFormatter) // e.g., "Tuesday"
+        val dateText = currentDate.format(dateFormatter) // e.g., "November 6"
+        val yearText = currentDate.format(yearFormatter) // e.g., "2024"
+
+        // Set the text
+        binding.day.text = dayText
+        binding.date.text = "$dateText\n$yearText"
+
+        // Determine the appropriate greeting message
+        val greeting = when (currentHour) {
+            in 5..11 -> "Good Morning"
+            in 12..17 -> "Good Afternoon"
+            in 18..21 -> "Good Evening"
+            else -> "Good Night"
         }
+        binding.greetingText.text = greeting
+
     }
 
     override fun onClick(v: View?) {

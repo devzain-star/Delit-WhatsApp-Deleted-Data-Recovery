@@ -20,17 +20,17 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
             0 -> OnboardingFragment.Companion.newInstance(
                 R.drawable.one,
                 "Welcome 👋🏼",
-                "Recover deleted WhatsApp chats, images, videos, and statuses."
+                "Recover deleted chats, images, videos, and statuses."
             )
             1 -> OnboardingFragment.Companion.newInstance(
                 R.drawable.recover,
                 "Recover Data",
-                "Retrieve deleted WhatsApp chats, media, and more."
+                "Retrieve deleted chats, media, and more."
             )
             2 -> OnboardingFragment.Companion.newInstance(
                 R.drawable.status,
                 "Download Status",
-                "You can now download and save WhatsApp statuses."
+                "You can now download and save statuses."
             )
             3 -> PermissionFragment.Companion.newInstance(
                 R.drawable.storage,
@@ -53,7 +53,7 @@ class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(acti
             else -> OnboardingFragment.Companion.newInstance(
                 R.drawable.one,
                 "You're Ready!",
-                "Start recovering your deleted WhatsApp data now."
+                "Start recovering your deleted data now."
             )
         }
     }

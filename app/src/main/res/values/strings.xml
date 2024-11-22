@@ -24,17 +24,17 @@
     <string name="day">Monday</string>
     <string name="zero">0</string>
     <string name="recovered_chats">Recovered Chats</string>
-    <string name="view_and_restore_deleted_whatsapp_chats">View and restore deleted WhatsApp chats</string>
-    <string name="access_recent_status_updates_from_whatsapp">Access recent status updates from WhatsApp</string>
+    <string name="view_and_restore_deleted_whatsapp_chats">View and restore deleted chats</string>
+    <string name="access_recent_status_updates_from_whatsapp">Access recent status updates from chat</string>
     <string name="deleted_videos">Deleted Videos</string>
-    <string name="browse_whatsapp_deleted_videos">Browse WhatsApp deleted videos</string>
+    <string name="browse_whatsapp_deleted_videos">Browse deleted videos</string>
     <string name="deleted_images">Deleted Images</string>
-    <string name="find_whatsapp_deleted_images">Find WhatsApp deleted images</string>
+    <string name="find_whatsapp_deleted_images">Find deleted images</string>
     <string name="sorry_nothing_found">Sorry! Nothing Found</string>
     <string name="enter_message">Enter message</string>
     <string name="send_message">Send Message</string>
     <string name="phone_no">Phone no</string>
-    <string name="open_a_chat_on_whatsapp_with_an_unsaved_contact">Open a chat on WhatsApp with an \nunsaved contact.</string>
+    <string name="open_a_chat_on_whatsapp_with_an_unsaved_contact">Open chat with an \nunsaved contact.</string>
     <string name="status_saver">Status Saver</string>
 
 </resources>

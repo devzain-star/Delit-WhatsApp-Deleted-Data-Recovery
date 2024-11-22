@@ -43,19 +43,11 @@ class SplashActivity : BaseActivity() {
         if (prefManager.isFirstTime()) {
             startActivity(Intent(this, OnboardingActivity::class.java))
         } else{
-           // startDataService()
+            //startService(Intent(this, NotificationForegroundService::class.java))
             startActivity(Intent(this, MainActivity::class.java))
         }
         finish()
     }
 
-    private fun startDataService(){
-        startService(Intent(this, NotificationForegroundService::class.java))
-        val serviceIntent = Intent(this, DataService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent)
-        }else{
-            startService(serviceIntent)
-        }
-    }
+
 }

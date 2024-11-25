@@ -36,5 +36,7 @@
     <string name="phone_no">Phone no</string>
     <string name="open_a_chat_on_whatsapp_with_an_unsaved_contact">Open chat with an \nunsaved contact.</string>
     <string name="status_saver">Status Saver</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,6 +11,10 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -22,10 +28,13 @@ import java.util.Locale
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+
+const val REQUEST_CODE_UPDATE = 1001
 class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +49,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         // Initialize Firebase Analytics
         analytics = Firebase.analytics
         init()
+        checkForAppUpdate(this)
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,5 +99,27 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.images -> screens.showCustomScreen(ImagesActivity::class.java)
 
         }
+    }
+
+    fun checkForAppUpdate(activity: Activity) {
+        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(activity)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    activity,
+                    REQUEST_CODE_UPDATE
+                )
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

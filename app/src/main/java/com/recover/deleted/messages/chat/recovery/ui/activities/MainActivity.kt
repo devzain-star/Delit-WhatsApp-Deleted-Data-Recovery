@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -20,7 +22,10 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
+import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
+import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModel
+import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModelFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
@@ -34,6 +39,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
+    private lateinit var statusViewModel: StatusViewModel
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +57,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         analytics = Firebase.analytics
         init()
         checkForAppUpdate(this)
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -87,6 +95,16 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             else -> "Good Night"
         }
         binding.greetingText.text = greeting
+
+        val repository = WhatsAppStatusRepository(applicationContext)
+        val viewModelFactory = StatusViewModelFactory(repository)
+
+        statusViewModel = ViewModelProvider(this, viewModelFactory).get(StatusViewModel::class.java)
+
+        statusViewModel.getStatuses().observe(this, Observer { statuses ->
+            val statusCount = statuses.size
+            binding.available.text = "$statusCount"
+        })
 
     }
 

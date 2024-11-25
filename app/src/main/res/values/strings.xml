@@ -38,5 +38,6 @@
     <string name="status_saver">Status Saver</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+    <string name="available_status">Available Status</string>
 
 </resources>

@@ -16,7 +16,6 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityOnboardingBinding
-import com.recover.deleted.messages.chat.recovery.services.DataService
 import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 class OnboardingActivity : BaseActivity() {

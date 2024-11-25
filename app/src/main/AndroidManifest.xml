@@ -24,6 +24,7 @@
     </queries>
 
     <application
+        android:name=".base.DelitApp"
         android:allowBackup="true"
         android:configChanges="uiMode|screenLayout|screenSize|smallestScreenSize"
         android:dataExtractionRules="@xml/data_extraction_rules"

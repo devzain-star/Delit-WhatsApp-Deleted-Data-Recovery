@@ -4,18 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-//@Entity(tableName = "filePaths")
+
 class StatusModel() : Parcelable {
-    //  @PrimaryKey(autoGenerate = true)
     var id: Int? = null
 
-    //  @ColumnInfo(name = "filepath")
     var filepath: String? = null
 
-    // @ColumnInfo(name = "type")
     var type: String? = null
 
-    //@Ignore
     var selected: Boolean = false
 
     constructor(parcel: Parcel) : this() {

@@ -1,9 +1,8 @@
 package com.recover.deleted.messages.chat.recovery.data
 
-
 import android.content.Context
 import android.os.Build
-import android.util.Log
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,14 +20,24 @@ class WhatsAppStatusRepository(private val context: Context) {
             if (persistedUris.isNotEmpty()) {
                 val documentFile = DocumentFile.fromTreeUri(context, persistedUris[0].uri)
                 documentFile?.listFiles()?.filter { it.isFile && it.name != ".nomedia" }?.forEach {
-                    statusList.add(StatusModel(filepath = it.uri.toString()))
+                    val status = StatusModel().apply {
+                        filepath = it.uri.toString()
+                        type = if (it.type?.contains("image") == true) "image" else "video"
+                        selected = false
+                    }
+                    statusList.add(status)
                 }
             }
         } else {
             val statusDir = PathDirectories.getWhatsappStatusFolder()
             statusDir.listFiles()?.filter { it.isFile && it.name != ".nomedia" }
                 ?.sortedByDescending { it.lastModified() }?.forEach {
-                    statusList.add(StatusModel(filepath = it.toUri().toString()))
+                    val status = StatusModel().apply {
+                        filepath = it.toUri().toString()
+                        type = if (it.extension in listOf("jpg", "jpeg", "png")) "image" else "video"
+                        selected = false
+                    }
+                    statusList.add(status)
                 }
         }
 

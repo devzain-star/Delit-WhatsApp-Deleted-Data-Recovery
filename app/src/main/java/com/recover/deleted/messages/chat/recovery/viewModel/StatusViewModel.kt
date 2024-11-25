@@ -3,12 +3,13 @@ package com.recover.deleted.messages.chat.recovery.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.model.StatusModel
 
-class StatusViewModel(application: Application) : AndroidViewModel(application) {
+class StatusViewModel(private val repository: WhatsAppStatusRepository) : ViewModel() {
 
-    private val repository = WhatsAppStatusRepository(application.applicationContext)
-
-    val whatsappStatuses: LiveData<List<StatusModel>> = repository.getWhatsAppStatuses()
+    fun getStatuses(): LiveData<List<StatusModel>> {
+        return repository.getWhatsAppStatuses()
+    }
 }

@@ -90,6 +90,7 @@ class PathDirectories {
             }
         }
 
+
         fun getWhatsappStatusFolder(): File {
             return if (File(
                     Environment.getExternalStorageDirectory()

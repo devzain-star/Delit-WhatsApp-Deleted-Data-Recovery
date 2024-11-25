@@ -68,5 +68,9 @@ dependencies {
     //common io
     implementation(files("libs/commons-io-2.4.jar"))
 
+    //glide
+    implementation (libs.glide)
+    implementation (libs.picasso)
+
 
 }

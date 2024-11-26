@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.StatusAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
@@ -69,7 +70,7 @@ class StatusActivity : BaseActivity() {
         } else {
             // If no URI is saved, prompt the user to select the folder
             Toast.makeText(this, "Please select the WhatsApp Status folder.", Toast.LENGTH_SHORT).show()
-            openFolderPicker()
+            showHelpDialog()
         }
     }
 
@@ -124,6 +125,30 @@ class StatusActivity : BaseActivity() {
         val prefs = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
         val uriString = prefs.getString(DELIT_STATUS_PREFS, null)
         return if (uriString != null) Uri.parse(uriString) else null
+    }
+
+    private fun showHelpDialog() {
+        // Creating an attractive dialog to guide the user
+        val dialogBuilder = MaterialAlertDialogBuilder(this)
+        dialogBuilder.apply {
+            setTitle("Grant Access to Status Folder")
+            setMessage(
+                """To recover WhatsApp status, we need access to the .status folder. Please follow the steps:
+                1. Select the "Allow Access" button below.
+                2. Choose the 'WhatsApp' folder from your internal storage.
+                3. Grant permission for our app to read and write to this folder.
+                """
+            )
+            setIcon(R.drawable.info) // Add a helpful icon (you can customize this)
+            setPositiveButton("Allow Access") { dialog, _ ->
+                openFolderPicker() // Open folder picker if the user chooses to grant access
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                screens.showToast("Access Denied")
+                dialog.dismiss()
+            }
+        }
+        dialogBuilder.create().show()
     }
 
 }

@@ -72,6 +72,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         setupStatuses()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupStatuses()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun init() {
         binding.apply {
@@ -110,8 +115,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         if (savedUri != null) {
             loadStatuses(savedUri)
         } else {
-            screens.showToast("Please select a folder to load statuses.")
-            showHelpDialog()
+            //openFolderPicker()
         }
     }
 
@@ -153,31 +157,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         return uriString?.let { Uri.parse(it) }
     }
 
-    private fun showHelpDialog() {
-        // Creating an attractive dialog to guide the user
-        val dialogBuilder = MaterialAlertDialogBuilder(this)
-        dialogBuilder.apply {
-            setTitle("Grant Access to Status Folder")
-            setMessage(
-                """
-                To recover WhatsApp status, we need access to the .status folder. Please follow the steps:
-                
-                1. Select the "Allow Access" button below.
-                2. Choose the 'WhatsApp' folder from your internal storage.
-                3. Grant permission for our app to read and write to this folder.
-                """
-            )
-            setIcon(R.drawable.info) // Add a helpful icon (you can customize this)
-            setPositiveButton("Allow Access") { dialog, _ ->
-                openFolderPicker() // Open folder picker if the user chooses to grant access
-            }
-            setNegativeButton("Cancel") { dialog, _ ->
-                screens.showToast("Access Denied")
-                dialog.dismiss()
-            }
-        }
-        dialogBuilder.create().show()
-    }
+
 
     override fun onClick(view: View) {
         val activity = when (view.id) {

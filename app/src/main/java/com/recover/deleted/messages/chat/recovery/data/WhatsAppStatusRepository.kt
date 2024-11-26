@@ -16,6 +16,7 @@ class WhatsAppStatusRepository(private val context: Context) {
         val statusList = mutableListOf<StatusModel>()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // For Android 11 and above, use DocumentFile with persisted URI permissions
             val persistedUris = context.contentResolver.persistedUriPermissions
             if (persistedUris.isNotEmpty()) {
                 val documentFile = DocumentFile.fromTreeUri(context, persistedUris[0].uri)
@@ -29,6 +30,7 @@ class WhatsAppStatusRepository(private val context: Context) {
                 }
             }
         } else {
+            // For Android 10 and below, use traditional File APIs
             val statusDir = PathDirectories.getWhatsappStatusFolder()
             statusDir.listFiles()?.filter { it.isFile && it.name != ".nomedia" }
                 ?.sortedByDescending { it.lastModified() }?.forEach {

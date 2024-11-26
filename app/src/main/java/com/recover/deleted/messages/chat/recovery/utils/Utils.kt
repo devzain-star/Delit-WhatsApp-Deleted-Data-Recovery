@@ -3,6 +3,7 @@ package com.recover.deleted.messages.chat.recovery.utils
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
+import android.webkit.MimeTypeMap
 
 import com.recover.deleted.messages.chat.recovery.R
 import org.apache.commons.io.FileUtils
@@ -23,6 +24,11 @@ class Utils {
                 arrayOf(mimeType),
                 null
             )
+        }
+
+        fun getMimeType(file: File): String {
+            val extension = file.extension
+            return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "application/octet-stream"
         }
 
         // Checks if a file is a video based on its extension

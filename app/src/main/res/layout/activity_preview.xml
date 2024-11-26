@@ -76,25 +76,6 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/deleteIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/_33sdp"
-                android:layout_height="@dimen/_33sdp"
-                android:background="@drawable/ic_round_pre"
-                android:padding="@dimen/_9sdp"
-                android:src="@drawable/ic_delete"
-                app:tint="@color/white"
-                android:contentDescription="@string/delete"
-                />
-        </LinearLayout>
-
     </LinearLayout>
 
 </RelativeLayout>

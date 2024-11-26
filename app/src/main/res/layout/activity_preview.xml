@@ -20,9 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         android:contentDescription="@string/description"
-        />
+        android:visibility="gone" />
 
     <VideoView
         android:id="@+id/videoView"
@@ -49,11 +48,10 @@
                 android:layout_width="@dimen/_33sdp"
                 android:layout_height="@dimen/_33sdp"
                 android:background="@drawable/ic_round_pre"
+                android:contentDescription="@string/downloads"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_download"
-                app:tint="@color/white"
-                android:contentDescription="@string/downloads"
-                />
+                app:tint="@color/white" />
 
         </LinearLayout>
 
@@ -69,11 +67,10 @@
                 android:layout_width="@dimen/_33sdp"
                 android:layout_height="@dimen/_33sdp"
                 android:background="@drawable/ic_round_pre"
+                android:contentDescription="@string/share"
                 android:padding="@dimen/_8sdp"
                 android:src="@drawable/ic_share"
-                app:tint="@color/white"
-                android:contentDescription="@string/share"
-                />
+                app:tint="@color/white" />
         </LinearLayout>
 
     </LinearLayout>

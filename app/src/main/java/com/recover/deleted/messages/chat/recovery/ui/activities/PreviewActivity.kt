@@ -60,7 +60,7 @@ class PreviewActivity : BaseActivity() {
     private fun downloadStatus() {
         val statusUri = Uri.parse(status.filepath) // Parse the content URI
         if (statusUri == null) {
-              screens.showToast("Unable to download.")
+            screens.showToast("Unable to download.")
             return
         }
         val fileName = getFileNameFromUri(statusUri) ?: "status_${System.currentTimeMillis()}.file"
@@ -106,15 +106,19 @@ class PreviewActivity : BaseActivity() {
         val values = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
             put(MediaStore.MediaColumns.MIME_TYPE, Utils.getMimeType(file))
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/${getString(R.string.app_name)}/Status")
+            put(
+                MediaStore.MediaColumns.RELATIVE_PATH,
+                "${Environment.DIRECTORY_PICTURES}/${getString(R.string.app_name)}/Status"
+            )
         }
 
         try {
-            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)?.let { uri ->
-                contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    file.inputStream().copyTo(outputStream)
+            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                ?.let { uri ->
+                    contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        file.inputStream().copyTo(outputStream)
+                    }
                 }
-            }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("PreviewActivity", "Error adding to MediaStore: ${e.message}")

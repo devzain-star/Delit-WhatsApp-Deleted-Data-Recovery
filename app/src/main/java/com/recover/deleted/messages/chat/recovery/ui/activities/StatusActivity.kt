@@ -1,9 +1,13 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +19,8 @@ import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityStatusBinding
 import com.recover.deleted.messages.chat.recovery.model.StatusModel
+import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_PREFS
+import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_STATUS_PREFS
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModel
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModelFactory
 
@@ -53,10 +59,17 @@ class StatusActivity : BaseActivity() {
         }
     }
 
-    // Observe the LiveData from ViewModel
     private fun observeStatuses() {
-        viewModel.getStatuses().observe(this) { statuses ->
-            updateStatuses(statuses)
+        val uri = getSavedUri()
+        if (uri != null) {
+            // If a URI is already saved, observe statuses
+            viewModel.getStatusesFromUri(uri).observe(this) { statuses ->
+                updateStatuses(statuses)
+            }
+        } else {
+            // If no URI is saved, prompt the user to select the folder
+            Toast.makeText(this, "Please select the WhatsApp Status folder.", Toast.LENGTH_SHORT).show()
+            openFolderPicker()
         }
     }
 
@@ -75,7 +88,42 @@ class StatusActivity : BaseActivity() {
         } else {
             emptyLay.visibility = RelativeLayout.GONE
         }
-
-
     }
+
+    private fun openFolderPicker() {
+        folderPickerLauncher.launch(null)
+    }
+
+    // Handle the result of folder selection
+    private val folderPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
+            if (uri != null) {
+                // Persist permissions for the selected folder
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                saveUriToPreferences(uri)
+                // Observe statuses from the selected folder
+                viewModel.getStatusesFromUri(uri).observe(this) { statuses ->
+                    updateStatuses(statuses)
+                }
+            } else {
+                Toast.makeText(this, "Folder selection canceled", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    // Save the folder URI to SharedPreferences
+    private fun saveUriToPreferences(uri: Uri) {
+        val prefs = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
+        prefs.edit().putString(DELIT_STATUS_PREFS, uri.toString()).apply()
+    }
+
+    // Retrieve the saved folder URI from SharedPreferences
+    private fun getSavedUri(): Uri? {
+        val prefs = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
+        val uriString = prefs.getString(DELIT_STATUS_PREFS, null)
+        return if (uriString != null) Uri.parse(uriString) else null
+    }
+
 }

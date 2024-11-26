@@ -3,17 +3,17 @@ package com.recover.deleted.messages.chat.recovery.ui.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -24,120 +24,170 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
+import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_PREFS
+import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_STATUS_PREFS
+import com.recover.deleted.messages.chat.recovery.utils.Constants.REQUEST_CODE_UPDATE
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModel
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModelFactory
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.Calendar
-import java.util.Locale
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-
-const val REQUEST_CODE_UPDATE = 1001
 class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
     private lateinit var statusViewModel: StatusViewModel
 
+    private val folderPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
+            if (uri != null) {
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                saveUriToPreferences(uri)
+                loadStatuses(uri)
+            } else {
+                screens.showToast("Folder selection canceled")
+            }
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Initialize Firebase Analytics
+
         analytics = Firebase.analytics
         init()
-        checkForAppUpdate(this)
-
+        checkForAppUpdate()
+        setupStatuses()
     }
 
-    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun init(){
-        binding.fabBtn.setOnClickListener(this)
-        binding.chats.setOnClickListener(this)
-        binding.status.setOnClickListener(this)
-        binding.videos.setOnClickListener(this)
-        binding.images.setOnClickListener(this)
-
-        // Get the current date
-        val currentDate = LocalDate.now()
-        val currentTime = LocalTime.now()
-        val currentHour = currentTime.hour
-
-        // Format the day and date
-        val dayFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
-        val dateFormatter = DateTimeFormatter.ofPattern("MMMM d", Locale.getDefault())
-        val yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.getDefault())
-
-        val dayText = currentDate.format(dayFormatter) // e.g., "Tuesday"
-        val dateText = currentDate.format(dateFormatter) // e.g., "November 6"
-        val yearText = currentDate.format(yearFormatter) // e.g., "2024"
-
-        // Set the text
-        binding.day.text = dayText
-        binding.date.text = "$dateText\n$yearText"
-
-        // Determine the appropriate greeting message
-        val greeting = when (currentHour) {
-            in 5..11 -> "Good Morning"
-            in 12..17 -> "Good Afternoon"
-            in 18..21 -> "Good Evening"
-            else -> "Good Night"
+    private fun init() {
+        binding.apply {
+            fabBtn.setOnClickListener(this@MainActivity)
+            chats.setOnClickListener(this@MainActivity)
+            status.setOnClickListener(this@MainActivity)
+            videos.setOnClickListener(this@MainActivity)
+            images.setOnClickListener(this@MainActivity)
         }
-        binding.greetingText.text = greeting
 
+        setGreetingAndDate()
         val repository = WhatsAppStatusRepository(applicationContext)
         val viewModelFactory = StatusViewModelFactory(repository)
-
-        statusViewModel = ViewModelProvider(this, viewModelFactory).get(StatusViewModel::class.java)
-
-        statusViewModel.getStatuses().observe(this, Observer { statuses ->
-            val statusCount = statuses.size
-            binding.available.text = "$statusCount"
-        })
-
+        statusViewModel = ViewModelProvider(this, viewModelFactory)[StatusViewModel::class.java]
     }
 
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.fabBtn -> screens.showCustomScreen(QuickSendActivity::class.java)
-            R.id.chats -> screens.showCustomScreen(ChatsActivity::class.java)
-            R.id.status -> screens.showCustomScreen(StatusActivity::class.java)
-            R.id.videos -> screens.showCustomScreen(VideosActivity::class.java)
-            R.id.images -> screens.showCustomScreen(ImagesActivity::class.java)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setGreetingAndDate() {
+        val currentDate = LocalDate.now()
+        val currentHour = LocalTime.now().hour
 
+        binding.apply {
+            day.text = currentDate.format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault()))
+            date.text = currentDate.format(DateTimeFormatter.ofPattern("MMMM d\nyyyy", Locale.getDefault()))
+            greetingText.text = when (currentHour) {
+                in 5..11 -> "Good Morning"
+                in 12..17 -> "Good Afternoon"
+                in 18..21 -> "Good Evening"
+                else -> "Good Night"
+            }
         }
     }
 
-    fun checkForAppUpdate(activity: Activity) {
-        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(activity)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+    private fun setupStatuses() {
+        val savedUri = getSavedUri()
+        if (savedUri != null) {
+            loadStatuses(savedUri)
+        } else {
+            screens.showToast("Please select a folder to load statuses.")
+            showHelpDialog()
+        }
+    }
 
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+    private fun loadStatuses(uri: Uri) {
+        statusViewModel.getStatusesFromUri(uri).observe(this) { statuses ->
+            binding.available.text = statuses.size.toString()
+        }
+    }
+
+    private fun checkForAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     AppUpdateType.IMMEDIATE,
-                    activity,
+                    this,
                     REQUEST_CODE_UPDATE
                 )
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun openFolderPicker() {
+        folderPickerLauncher.launch(null)
+    }
+
+    private fun saveUriToPreferences(uri: Uri) {
+        getSharedPreferences(DELIT_PREFS, MODE_PRIVATE).edit()
+            .putString(DELIT_STATUS_PREFS, uri.toString())
+            .apply()
+    }
+
+    private fun getSavedUri(): Uri? {
+        val uriString = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
+            .getString(DELIT_STATUS_PREFS, null)
+        return uriString?.let { Uri.parse(it) }
+    }
+
+    private fun showHelpDialog() {
+        // Creating an attractive dialog to guide the user
+        val dialogBuilder = MaterialAlertDialogBuilder(this)
+        dialogBuilder.apply {
+            setTitle("Grant Access to Status Folder")
+            setMessage(
+                """
+                To recover WhatsApp status, we need access to the .status folder. Please follow the steps:
+                
+                1. Select the "Allow Access" button below.
+                2. Choose the 'WhatsApp' folder from your internal storage.
+                3. Grant permission for our app to read and write to this folder.
+                """
+            )
+            setIcon(R.drawable.info) // Add a helpful icon (you can customize this)
+            setPositiveButton("Allow Access") { dialog, _ ->
+                openFolderPicker() // Open folder picker if the user chooses to grant access
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                screens.showToast("Access Denied")
+                dialog.dismiss()
+            }
+        }
+        dialogBuilder.create().show()
+    }
+
+    override fun onClick(view: View) {
+        val activity = when (view.id) {
+            R.id.fabBtn -> QuickSendActivity::class.java
+            R.id.chats -> ChatsActivity::class.java
+            R.id.status -> StatusActivity::class.java
+            R.id.videos -> VideosActivity::class.java
+            R.id.images -> ImagesActivity::class.java
+            else -> null
+        }
+        activity?.let { screens.showCustomScreen(it) }
     }
 }

@@ -3,6 +3,11 @@ package com.recover.deleted.messages.chat.recovery.utils
 import com.recover.deleted.messages.chat.recovery.models.App
 
 object Constants {
+    const val DELIT_PREFS = "delit_prefs"
+    const val DELIT_STATUS_PREFS = "status_folder_uri"
+
+
+    const val REQUEST_CODE_UPDATE = 1001
     const val PERMISSION_DIALOG_TITLE = "permission_dialog_title"
     const val PERMISSION_DIALOG_MSG = "permission_dialog_msg"
     const val PERMISSION_DIALOG_DENIED_TITLE = "permission_dialog_denied_title"

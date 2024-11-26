@@ -8,7 +8,6 @@ class StatusViewModelFactory(
     private val repository: WhatsAppStatusRepository
 ) : ViewModelProvider.Factory {
 
-    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StatusViewModel::class.java)) {
             return StatusViewModel(repository) as T

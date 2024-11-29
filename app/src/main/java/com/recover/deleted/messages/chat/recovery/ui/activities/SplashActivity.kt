@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.WindowInsets
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -16,15 +18,24 @@ import com.recover.deleted.messages.chat.recovery.services.NotificationForegroun
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
     lateinit var binding: ActivitySplashBinding
-    private var isAppReady = false
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val splashScreen = installSplashScreen()
-
-        splashScreen.setKeepOnScreenCondition{ !isAppReady }
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val splashScreen = installSplashScreen()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowInsetsController = window.insetsController
+            windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        } else {
+
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        }
+        splashScreen.setKeepOnScreenCondition {
+            false
+        }
+
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initializeApp()
@@ -32,7 +43,6 @@ class SplashActivity : BaseActivity() {
 
     private fun initializeApp() {
         Handler(Looper.getMainLooper()).postDelayed({
-            isAppReady = true
             startMainActivity()
         }, 2000)
     }

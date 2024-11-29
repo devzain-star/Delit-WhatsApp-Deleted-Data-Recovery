@@ -41,6 +41,7 @@ class StatusAdapter(private val statusesList: List<StatusModel>, private val con
     inner class StatusViewHolder(
         val binding: StatusItemBinding
     ) : RecyclerView.ViewHolder(binding.root){
+
         fun bind(status: StatusModel) {
             // Check if it's a video file and set play icon visibility accordingly
             if (Utils.isVideoFile(status.filepath)) {

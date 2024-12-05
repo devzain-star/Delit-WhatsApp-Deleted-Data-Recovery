@@ -18,15 +18,11 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.ChatAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityChatsBinding
-import com.recover.deleted.messages.chat.recovery.models.ChatMessage
-import com.recover.deleted.messages.chat.recovery.viewModel.ChatViewModel
 
 class ChatsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityChatsBinding
     private lateinit var emptyLay: RelativeLayout
-    private val viewModel: ChatViewModel by viewModels()
-    private val adapter = ChatAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,26 +39,9 @@ class ChatsActivity : BaseActivity() {
 
 
         binding.chatRecycler.layoutManager = LinearLayoutManager(this)
-        binding.chatRecycler.adapter = adapter
 
-        viewModel.messages.observe(this, Observer { messages ->
-            adapter.submitList(messages)
-        })
-
-        val filter = IntentFilter("WhatsAppMessage")
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, filter)
 
     }
 
-    private val messageReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val message = intent.getParcelableExtra<ChatMessage>("message")
-            message?.let { viewModel.addMessage(it) }
-        }
-    }
 
-    override fun onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver)
-        super.onDestroy()
-    }
 }

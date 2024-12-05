@@ -31,6 +31,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Delit"
         tools:targetApi="31">
+
+        <service
+            android:name=".services.NotificationForegroundService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ui.activities.PreviewActivity"
             android:exported="false" />

@@ -1,6 +1,7 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -57,6 +58,7 @@ class SplashActivity : BaseActivity() {
         }
         finish()
     }
+
 
 
 }

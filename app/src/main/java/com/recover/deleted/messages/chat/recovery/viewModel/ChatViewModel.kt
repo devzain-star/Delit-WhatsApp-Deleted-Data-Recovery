@@ -1,13 +1,18 @@
 package com.recover.deleted.messages.chat.recovery.viewModel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.recover.deleted.messages.chat.recovery.models.ChatMessage
-import com.recover.deleted.messages.chat.recovery.services.WhatsAppNotificationService
 
 class ChatViewModel : ViewModel() {
 
-    private val chatMessages = WhatsAppNotificationService().getChatMessages()
+    private val _messages = MutableLiveData<List<ChatMessage>>(emptyList())
+    val messages: LiveData<List<ChatMessage>> = _messages
 
-    fun getChatMessages(): LiveData<List<ChatMessage>> = chatMessages
+    fun addMessage(message: ChatMessage) {
+        val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+        updatedMessages.add(0, message) // Add to the top
+        _messages.value = updatedMessages
+    }
 }

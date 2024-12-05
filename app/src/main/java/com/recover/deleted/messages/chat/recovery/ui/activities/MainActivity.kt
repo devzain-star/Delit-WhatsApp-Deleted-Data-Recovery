@@ -74,9 +74,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         setupStatuses()
 
         if (!isNotificationAccessEnabled(this)) {
-
             showNotificationAccessDialog()
         }
+
     }
 
     override fun onResume() {
@@ -178,25 +178,20 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         activity?.let { screens.showCustomScreen(it) }
     }
 
-    private fun showNotificationAccessDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Notification Access Required")
-            .setMessage("This app needs access to your notifications to detect deleted WhatsApp messages. Please enable notification access.")
-            .setPositiveButton("Grant Access") { _, _ ->
-                requestNotificationAccess(this)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun requestNotificationAccess(context: Context) {
-        val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-        context.startActivity(intent)
-    }
-
     private fun isNotificationAccessEnabled(context: Context): Boolean {
         val enabledListeners =
             android.provider.Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
         return enabledListeners?.contains(context.packageName) == true
+    }
+
+    private fun showNotificationAccessDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Notification Access Required")
+            .setMessage("Please enable notification access to detect WhatsApp messages.")
+            .setPositiveButton("Grant Access") { _, _ ->
+                startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

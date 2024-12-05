@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootChatItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/userProfile"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="@string/description"
+                android:padding="7dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/avatar" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/tvTime"
+                android:layout_toEndOf="@+id/userProfile"
+                android:fontFamily="@font/bold"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/tvMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvName"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/tvTime"
+                android:layout_toEndOf="@+id/userProfile"
+                android:fontFamily="@font/regular"
+                android:singleLine="true"
+                android:text="@string/description"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/demo_time"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/tvCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTime"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/ten"
+                android:textSize="11sp"
+                android:textStyle="normal" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+</RelativeLayout>

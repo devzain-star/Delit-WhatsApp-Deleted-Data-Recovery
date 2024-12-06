@@ -73,7 +73,10 @@ dependencies {
     implementation (libs.picasso)
 
     //AutoUpdate
-    implementation("com.google.android.play:app-update:2.1.0")
+    implementation(libs.app.update)
     implementation("com.google.android.play:app-update-ktx:2.1.0")
+
+    //GSON
+    implementation (libs.gson)
 
 }

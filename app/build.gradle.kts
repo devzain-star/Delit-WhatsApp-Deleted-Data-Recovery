@@ -74,7 +74,7 @@ dependencies {
 
     //AutoUpdate
     implementation(libs.app.update)
-    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation(libs.app.update.ktx)
 
     //GSON
     implementation (libs.gson)

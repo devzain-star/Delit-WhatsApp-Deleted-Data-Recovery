@@ -15,4 +15,8 @@
         <item name="postSplashScreenTheme">@style/Theme.Delit</item>
 
     </style>
+
+    <style name="messageStyle">
+        <item name="android:background">@drawable/message_bg</item>
+    </style>
 </resources>

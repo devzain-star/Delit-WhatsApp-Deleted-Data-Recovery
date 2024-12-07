@@ -41,5 +41,6 @@
     <string name="available_status">Available Status</string>
     <string name="demo_time">02:45 PM</string>
     <string name="ten">10 messages</string>
+    <string name="demo_message">Message</string>
 
 </resources>

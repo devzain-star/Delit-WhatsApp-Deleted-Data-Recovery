@@ -2,9 +2,11 @@ package com.recover.deleted.messages.chat.recovery.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,7 @@ import com.recover.deleted.messages.chat.recovery.databinding.ChatItemBinding
 import com.recover.deleted.messages.chat.recovery.model.ContactModel
 import com.recover.deleted.messages.chat.recovery.services.NotificationService
 import com.recover.deleted.messages.chat.recovery.sqlite.SqliteHelper
+import com.recover.deleted.messages.chat.recovery.ui.activities.ChatViewActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -36,7 +39,7 @@ class ChatAdapter(val data: List<ContactModel>, val context: Context) :
     ): ChatAdapter.ChatHolder {
         return ChatHolder(
             ChatItemBinding.inflate(
-                android.view.LayoutInflater.from(parent.context),
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             )
@@ -87,6 +90,16 @@ class ChatAdapter(val data: List<ContactModel>, val context: Context) :
         else {
             holder.binding.tvTime.text = dateFormatter.format(Date(item.time))
         }
+
+        holder.binding.rootChatItem.setOnClickListener(View.OnClickListener {
+            context
+                .startActivity(
+                    Intent(context, ChatViewActivity::class.java)
+                        .putExtra("cid", item.id)
+                        .putExtra("name", item.name)
+                        .putExtra("logo", item.logo)
+                )
+        })
 
 
     }

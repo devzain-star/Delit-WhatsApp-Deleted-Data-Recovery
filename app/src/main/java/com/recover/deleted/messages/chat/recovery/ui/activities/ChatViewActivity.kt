@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.ChatListAdapter
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityChatViewBinding
@@ -83,6 +84,8 @@ class ChatViewActivity : AppCompatActivity() {
             adapter = ChatListAdapter(list!!, applicationContext)
             binding.rvChat.adapter = adapter
             binding.rvChat.layoutManager?.scrollToPosition(list!!.size - 1)
+            Log.d(TAG, "Chats: " + Gson().toJson(list))
+
         }
 
         binding.back.setOnClickListener {

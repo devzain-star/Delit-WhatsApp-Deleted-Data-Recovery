@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:paddingStart="@dimen/_10sdp"
     android:paddingEnd="@dimen/_10sdp"
-    android:layout_height="@dimen/_40sdp">
+    android:layout_height="@dimen/_40sdp"
+    android:id="@+id/headerLayout"
+    >
 
     <ImageView
         android:id="@+id/back"

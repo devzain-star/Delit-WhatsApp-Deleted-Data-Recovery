@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.recover.deleted.messages.chat.recovery.R
+import com.recover.deleted.messages.chat.recovery.utils.Permissions
 import com.recover.deleted.messages.chat.recovery.utils.PreferencesManager
 import com.recover.deleted.messages.chat.recovery.utils.Screens
 
@@ -14,13 +15,14 @@ open class BaseActivity: AppCompatActivity() {
     lateinit var activity: Activity
     lateinit var screens: Screens
     lateinit var prefManager: PreferencesManager
-
+    lateinit var permissions: Permissions
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activity = this
         screens = Screens(activity)
         prefManager = PreferencesManager(activity)
+        permissions = Permissions(this)
 
     }
 

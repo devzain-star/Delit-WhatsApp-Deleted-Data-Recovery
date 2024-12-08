@@ -1,5 +1,7 @@
 package com.recover.deleted.messages.chat.recovery.utils
 
+import android.Manifest
+import android.os.Build
 import com.recover.deleted.messages.chat.recovery.models.App
 
 object Constants {
@@ -35,5 +37,16 @@ object Constants {
     const val MIN_REPLIES_TO_ASK_APP_RATING = 5
     const val EMAIL_ADDRESS = "delit@revviz.com"
     const val EMAIL_SUBJECT = "Delit-Feedback"
+
+    const val REQUEST_PERMISSIONS : Int = 100
+    val STORAGE_PERMISSIONS =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO)
+        } else {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+                //  Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
 
 }

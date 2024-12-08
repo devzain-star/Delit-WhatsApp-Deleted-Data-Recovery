@@ -82,5 +82,10 @@ class Utils {
         fun getCurrentTimestamp(): Long {
             return System.currentTimeMillis()
         }
+
+
+        fun compareDates(startDate: Long?, fileDate: Long): Boolean {
+            return fileDate> startDate!!
+        }
     }
 }

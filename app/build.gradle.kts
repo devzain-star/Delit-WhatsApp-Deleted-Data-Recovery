@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.recover.deleted.messages.chat.recovery"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.recover.deleted.messages.chat.recovery"
         minSdk = 23
-        targetSdk = 34
-        versionCode = 13
-        versionName = "1.1.3"
+        targetSdk = 35
+        versionCode = 14
+        versionName = "1.1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,5 +78,8 @@ dependencies {
 
     //GSON
     implementation (libs.gson)
+
+    //WorkManager
+    implementation (libs.androidx.work.runtime.ktx)
 
 }

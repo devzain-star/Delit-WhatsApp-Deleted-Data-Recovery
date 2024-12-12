@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
+import com.recover.deleted.messages.chat.recovery.services.DataTransferService
 import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_PREFS
 import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_STATUS_PREFS
 import com.recover.deleted.messages.chat.recovery.utils.Constants.REQUEST_CODE_UPDATE
@@ -41,6 +43,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
     private lateinit var statusViewModel: StatusViewModel
+
+    companion object {
+        private const val REQUEST_CODE_FOREGROUND_SERVICE = 101
+    }
 
     private val folderPickerLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
@@ -73,6 +79,19 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         checkForAppUpdate()
         setupStatuses()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC),
+                    REQUEST_CODE_FOREGROUND_SERVICE
+                )
+            } else {
+                startMyForegroundService()
+            }
+        } else {
+            startMyForegroundService()
+        }
+
     }
 
     override fun onResume() {
@@ -103,7 +122,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         binding.apply {
             day.text = currentDate.format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault()))
-            date.text = currentDate.format(DateTimeFormatter.ofPattern("MMMM d\nyyyy", Locale.getDefault()))
+            date.text =
+                currentDate.format(DateTimeFormatter.ofPattern("MMMM d\nyyyy", Locale.getDefault()))
             greetingText.text = when (currentHour) {
                 in 5..11 -> "Good Morning"
                 in 12..17 -> "Good Afternoon"
@@ -161,7 +181,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-
     override fun onClick(view: View) {
         val activity = when (view.id) {
             R.id.fabBtn -> QuickSendActivity::class.java
@@ -172,6 +191,32 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             else -> null
         }
         activity?.let { screens.showCustomScreen(it) }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_FOREGROUND_SERVICE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                startMyForegroundService()
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Permission required to sync data", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startMyForegroundService() {
+        val intent = Intent(this, DataTransferService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
 

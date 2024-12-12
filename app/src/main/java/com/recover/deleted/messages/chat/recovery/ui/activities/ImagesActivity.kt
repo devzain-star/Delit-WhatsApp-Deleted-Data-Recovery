@@ -1,5 +1,6 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,15 +13,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.PhotoAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
+import com.recover.deleted.messages.chat.recovery.data.WhatsAppImageManager
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityImagesBinding
 import com.recover.deleted.messages.chat.recovery.model.StatusModel
+import com.recover.deleted.messages.chat.recovery.services.DataTransferService
 import com.recover.deleted.messages.chat.recovery.utils.Constants
 import com.recover.deleted.messages.chat.recovery.utils.PathDirectories
 import com.recover.deleted.messages.chat.recovery.utils.Utils
 import com.recover.deleted.messages.chat.recovery.utils.fileComparator
+import com.recover.deleted.messages.chat.recovery.workers.WhatsAppImageWorker
 import org.apache.commons.io.comparator.LastModifiedFileComparator
 import java.io.File
 import java.io.FileInputStream
@@ -50,7 +56,9 @@ class ImagesActivity : BaseActivity() {
 
         if (permissions.isStorageAllow()) {
             movePhotoData()
-        } else requestPermissions(Constants.STORAGE_PERMISSIONS, Constants.REQUEST_PERMISSIONS)
+        } else {
+            requestPermissions(Constants.STORAGE_PERMISSIONS, Constants.REQUEST_PERMISSIONS)
+        }
 
         whatsapp_image.observe(this, Observer {
             if (it.isEmpty()) {
@@ -61,9 +69,11 @@ class ImagesActivity : BaseActivity() {
             myAdapter = PhotoAdapter(it, this)
             binding.contentRecycler.adapter = myAdapter
         })
+
+        startDataTransferService()
     }
 
-    fun setInsets(){
+    fun setInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -76,16 +86,13 @@ class ImagesActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 val cloneList: MutableList<StatusModel> = mutableListOf()
-                // Define the folder path
-                val folderPath =
-                    "/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images"
+                val folderPath = "/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images"
                 val contentResolver = this.contentResolver
                 val projection = arrayOf(
-                    MediaStore.Images.Media._ID, // Include file ID in projection
+                    MediaStore.Images.Media._ID,
                     MediaStore.Images.Media.DATA
                 )
                 val selection = "${MediaStore.Images.Media.DATA} LIKE '$folderPath%'"
-                // Change this to match your directory
                 val cursor = contentResolver.query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     projection,
@@ -96,14 +103,12 @@ class ImagesActivity : BaseActivity() {
 
                 cursor?.use { cursor ->
                     while (cursor.moveToNext()) {
-                        val id =
-                            cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
-                        val filepath =
-                            cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+                        val id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
+                        val filepath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                         val statusModel = StatusModel().apply {
                             this.filepath = filepath
                             this.id = id
-                        } // Create StatusModel object with filepath and selected status
+                        }
                         cloneList.add(statusModel)
                     }
                 }
@@ -117,8 +122,7 @@ class ImagesActivity : BaseActivity() {
                 Collections.sort(listFiles, fileComparator())
                 var check = false
                 for (pathname in listFiles) {
-                    if (check)
-                        break
+                    if (check) break
                     if (pathname.isFile) {
                         Utils.compareDates(prefManager.getDate(), pathname.lastModified()).let {
                             if (it) {
@@ -130,8 +134,7 @@ class ImagesActivity : BaseActivity() {
                                         e.printStackTrace()
                                     }
                                 }
-                            } else
-                                check = true
+                            } else check = true
                         }
                     }
                 }
@@ -163,8 +166,7 @@ class ImagesActivity : BaseActivity() {
     }
 
     private fun copyFile(sourceFile: File?, destFile: File) {
-        if (!destFile.parentFile?.exists()!!)
-        {
+        if (!destFile.parentFile?.exists()!!) {
             if (!destFile.parentFile?.mkdirs()!!) {
                 Log.e(TAG, "Failed to create parent directory: ${destFile.parentFile.absolutePath}")
                 return
@@ -189,4 +191,16 @@ class ImagesActivity : BaseActivity() {
             destination?.close()
         }
     }
+
+    private fun startDataTransferService() {
+        val serviceIntent = Intent(this, DataTransferService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
+    }
 }
+
+
+

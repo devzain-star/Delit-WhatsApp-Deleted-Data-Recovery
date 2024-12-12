@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <queries>
         <package android:name="com.whatsapp" />
@@ -34,6 +35,12 @@
         <activity
             android:name=".ui.activities.ChatViewActivity"
             android:exported="false" />
+
+        <service
+            android:name=".services.DataTransferService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"/>
+
 
         <service
             android:name=".services.NotificationService"

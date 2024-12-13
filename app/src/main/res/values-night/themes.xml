@@ -19,4 +19,8 @@
     <style name="chatStyle">
         <item name="cardBackgroundColor">@color/audio_night</item>
     </style>
+
+    <style name="CustomImageViewStyle">
+        <item name="android:tint">@color/white</item> 
+    </style>
 </resources>

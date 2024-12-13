@@ -31,16 +31,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Delit"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.activities.SettingActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activities.ChatViewActivity"
             android:exported="false" />
 
         <service
             android:name=".services.MediaBackgroundService"
-            android:foregroundServiceType="mediaProjection"
-            android:exported="false" />
-
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
         <service
             android:name=".services.NotificationService"
             android:exported="true"

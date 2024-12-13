@@ -19,4 +19,8 @@
     <style name="messageStyle">
         <item name="android:background">@drawable/message_bg</item>
     </style>
+
+    <style name="CustomImageViewStyle">
+        <item name="android:tint">@color/black</item>
+    </style>
 </resources>

@@ -42,7 +42,6 @@ class ImagesActivity : BaseActivity() {
     private lateinit var emptyLayout: RelativeLayout
     private lateinit var adapter: PhotoAdapter
     private lateinit var deletedMediaManager: DeletedMediaManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImagesBinding.inflate(layoutInflater)
@@ -60,8 +59,11 @@ class ImagesActivity : BaseActivity() {
     }
 
     private fun loadDeletedImages() {
+        val appInstallTime = packageManager.getPackageInfo(packageName, 0).firstInstallTime
         val imagesDir = File(getExternalFilesDir(null), "${getString(R.string.app_name)}/Images")
-        val imageFiles = imagesDir.listFiles()?.filter { it.isFile } ?: emptyList()
+        val imageFiles = imagesDir.listFiles()?.filter {
+            it.isFile && it.lastModified() >= appInstallTime
+        }?.sortedByDescending { it.lastModified() } ?: emptyList()
 
         if (imageFiles.isEmpty()) {
             emptyLayout.visibility = View.VISIBLE
@@ -77,6 +79,8 @@ class ImagesActivity : BaseActivity() {
             binding.contentRecycler.adapter = adapter
         }
     }
+
+
 
     private fun setupRecyclerView() {
         adapter = PhotoAdapter(emptyList(),this)

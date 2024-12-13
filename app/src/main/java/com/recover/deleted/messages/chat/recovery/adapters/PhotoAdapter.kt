@@ -34,13 +34,13 @@ class PhotoAdapter(val data : List<StatusModel>, val context: Context) :
             .into(holder.binding.gridImageVideo)
         Log.d("FileModel", "onBindViewHolder: "+model.filepath)
 
-        holder.itemView.setOnClickListener {
+        holder.binding.root.setOnClickListener {
             val intent = Intent(context, PreviewActivity::class.java)
-            intent.putParcelableArrayListExtra("images", data as ArrayList<out Parcelable?>?)
-            intent.putExtra("position", position)
-            intent.putExtra("statusdownload", "download")
-            //context.startActivity(intent)
+            intent.putExtra("status", model)
+            context.startActivity(intent)
         }
+
+
     }
 
     override fun getItemCount(): Int {

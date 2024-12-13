@@ -2,6 +2,7 @@ package com.recover.deleted.messages.chat.recovery.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,5 +34,7 @@ open class BaseActivity: AppCompatActivity() {
         } catch (_: Exception) {
         }
     }
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.enableEdgeToEdge
@@ -39,10 +40,11 @@ class VideosActivity : BaseActivity() {
     }
 
     private fun loadDeletedVideos() {
-        val appInstallTime = packageManager.getPackageInfo(packageName, 0).firstInstallTime
+        val appInstallTime = getAppInstallTime()
+        Log.d("AppInstallTime", "loadDeletedVideos: "+appInstallTime)
         val videosDir = File(getExternalFilesDir(null), "${getString(R.string.app_name)}/Videos")
-        val videoFiles = videosDir.listFiles()?.filter {
-            it.isFile && it.lastModified() >= appInstallTime
+        val videoFiles = videosDir.listFiles()?.filter { file ->
+            file.isFile && file.lastModified() >= appInstallTime
         }?.sortedByDescending { it.lastModified() } ?: emptyList()
 
         if (videoFiles.isEmpty()) {
@@ -67,6 +69,15 @@ class VideosActivity : BaseActivity() {
         binding.contentRecycler.apply {
             layoutManager = GridLayoutManager(this@VideosActivity, 3) // 3 columns
             adapter = adapter
+        }
+    }
+
+    fun getAppInstallTime(): Long {
+        return try {
+            packageManager.getPackageInfo(packageName, 0).firstInstallTime
+        } catch (e: Exception) {
+            Log.e("AppInstallTime", "Error getting app install time: ${e.message}")
+            System.currentTimeMillis() // Fallback to current time if install time retrieval fails
         }
     }
 }

@@ -20,7 +20,8 @@ class MediaBackgroundService : Service() {
 
         val mediaManager = DeletedMediaManager(this)
         Thread {
-            mediaManager.scanDeletedMedia()
+            mediaManager.scanWhatsAppMedia("image", mediaManager.dirImages)
+            mediaManager.scanWhatsAppMedia("video", mediaManager.dirVideos)
             stopSelf()
         }.start()
 

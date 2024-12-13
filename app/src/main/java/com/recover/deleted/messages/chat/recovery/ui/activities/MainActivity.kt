@@ -74,8 +74,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             insets
         }
 
-        val mediaManager = DeletedMediaManager(this)
-        mediaManager.startBackgroundScanning()
+        /*val mediaManager = DeletedMediaManager(this)
+        mediaManager.startBackgroundScanning()*/
         analytics = Firebase.analytics
         init()
         checkForAppUpdate()

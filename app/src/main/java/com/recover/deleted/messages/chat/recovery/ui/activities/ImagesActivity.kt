@@ -42,6 +42,8 @@ class ImagesActivity : BaseActivity() {
     private lateinit var emptyLayout: RelativeLayout
     private lateinit var adapter: PhotoAdapter
     private lateinit var deletedMediaManager: DeletedMediaManager
+    private val imageList = mutableListOf<StatusModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImagesBinding.inflate(layoutInflater)
@@ -55,41 +57,35 @@ class ImagesActivity : BaseActivity() {
 
         // Load Images
         setupRecyclerView()
-        loadDeletedImages()
+        loadImages()
     }
 
-    private fun loadDeletedImages() {
-        val appInstallTime = packageManager.getPackageInfo(packageName, 0).firstInstallTime
-        val imagesDir = File(getExternalFilesDir(null), "${getString(R.string.app_name)}/Images")
-        val imageFiles = imagesDir.listFiles()?.filter {
-            it.isFile && it.lastModified() >= appInstallTime
-        }?.sortedByDescending { it.lastModified() } ?: emptyList()
-
-        if (imageFiles.isEmpty()) {
-            emptyLayout.visibility = View.VISIBLE
-        } else {
-            emptyLayout.visibility = View.GONE
-            val imageModels = imageFiles.map { file ->
+    private fun loadImages() {
+        val fileSet = DeletedMediaManager(this).getFileSet("image")
+        val files = fileSet.map { filePath ->
+            File(filePath).takeIf { it.exists() }?.let { file ->
                 StatusModel().apply {
                     filepath = file.absolutePath
                     type = "image"
                 }
             }
-            adapter = PhotoAdapter(imageModels, this)
-            binding.contentRecycler.adapter = adapter
-        }
+        }.filterNotNull()
+
+        imageList.clear()
+        imageList.addAll(files.sortedByDescending { File(it.filepath).lastModified() })
+        binding.contentRecycler.adapter?.notifyDataSetChanged()
     }
 
 
-
     private fun setupRecyclerView() {
-        adapter = PhotoAdapter(emptyList(),this)
+        adapter = PhotoAdapter(imageList,this)
 
         binding.contentRecycler.apply {
             layoutManager = GridLayoutManager(this@ImagesActivity, 3) // 3 columns
             adapter = adapter
         }
     }
+
 }
 
 

@@ -13,20 +13,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.PhotoAdapter
+import com.recover.deleted.messages.chat.recovery.adapters.StatusAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
-import com.recover.deleted.messages.chat.recovery.data.WhatsAppImageManager
+import com.recover.deleted.messages.chat.recovery.data.DeletedMediaManager
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityImagesBinding
 import com.recover.deleted.messages.chat.recovery.model.StatusModel
-import com.recover.deleted.messages.chat.recovery.services.DataTransferService
 import com.recover.deleted.messages.chat.recovery.utils.Constants
 import com.recover.deleted.messages.chat.recovery.utils.PathDirectories
 import com.recover.deleted.messages.chat.recovery.utils.Utils
 import com.recover.deleted.messages.chat.recovery.utils.fileComparator
-import com.recover.deleted.messages.chat.recovery.workers.WhatsAppImageWorker
 import org.apache.commons.io.comparator.LastModifiedFileComparator
 import java.io.File
 import java.io.FileInputStream
@@ -39,168 +39,55 @@ import java.util.Collections
 class ImagesActivity : BaseActivity() {
 
     private lateinit var binding: ActivityImagesBinding
-    private lateinit var emptyLay: RelativeLayout
-    private lateinit var myAdapter: PhotoAdapter
-    private val whatsapp_image = MutableLiveData<List<StatusModel>>()
-    private lateinit var dirImages: File
-    private val TAG = "ImagesActivity"
+    private lateinit var emptyLayout: RelativeLayout
+    private lateinit var adapter: PhotoAdapter
+    private lateinit var deletedMediaManager: DeletedMediaManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityImagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        emptyLay = binding.root.findViewById(R.id.emptyLayout)
+
+        emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.images))
-        setInsets()
 
-        if (permissions.isStorageAllow()) {
-            movePhotoData()
+        // Initialize DeletedMediaManager
+        deletedMediaManager = DeletedMediaManager(this)
+
+        // Load Images
+        setupRecyclerView()
+        loadDeletedImages()
+    }
+
+    private fun loadDeletedImages() {
+        val imagesDir = File(getExternalFilesDir(null), "${getString(R.string.app_name)}/Images")
+        val imageFiles = imagesDir.listFiles()?.filter { it.isFile } ?: emptyList()
+
+        if (imageFiles.isEmpty()) {
+            emptyLayout.visibility = View.VISIBLE
         } else {
-            requestPermissions(Constants.STORAGE_PERMISSIONS, Constants.REQUEST_PERMISSIONS)
-        }
-
-        whatsapp_image.observe(this, Observer {
-            if (it.isEmpty()) {
-                emptyLay.visibility = View.VISIBLE
-            } else {
-                emptyLay.visibility = View.GONE
-            }
-            myAdapter = PhotoAdapter(it, this)
-            binding.contentRecycler.adapter = myAdapter
-        })
-
-        startDataTransferService()
-    }
-
-    fun setInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-    }
-
-    private fun movePhotoData() {
-        Log.d(TAG, "start: ")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                val cloneList: MutableList<StatusModel> = mutableListOf()
-                val folderPath = "/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images"
-                val contentResolver = this.contentResolver
-                val projection = arrayOf(
-                    MediaStore.Images.Media._ID,
-                    MediaStore.Images.Media.DATA
-                )
-                val selection = "${MediaStore.Images.Media.DATA} LIKE '$folderPath%'"
-                val cursor = contentResolver.query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    projection,
-                    selection,
-                    null,
-                    "${MediaStore.Images.Media.DATE_ADDED} DESC"
-                )
-
-                cursor?.use { cursor ->
-                    while (cursor.moveToNext()) {
-                        val id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
-                        val filepath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-                        val statusModel = StatusModel().apply {
-                            this.filepath = filepath
-                            this.id = id
-                        }
-                        cloneList.add(statusModel)
-                    }
-                }
-                whatsapp_image.postValue(cloneList)
-            } catch (_: Exception) {
-            }
-        } else {
-            try {
-                val file: File = PathDirectories.getWhatsappImages()
-                val listFiles = listOf(*file.listFiles() as Array<out File>)
-                Collections.sort(listFiles, fileComparator())
-                var check = false
-                for (pathname in listFiles) {
-                    if (check) break
-                    if (pathname.isFile) {
-                        Utils.compareDates(prefManager.getDate(), pathname.lastModified()).let {
-                            if (it) {
-                                val destinationFile = File(dirImages.path + "/" + pathname.name)
-                                if (!destinationFile.exists()) {
-                                    try {
-                                        copyFile(pathname, destinationFile)
-                                    } catch (e: IOException) {
-                                        e.printStackTrace()
-                                    }
-                                }
-                            } else check = true
-                        }
-                    }
-                }
-                getFromOwnDirectory()
-            } catch (_: Exception) {
-            }
-        }
-    }
-
-    private fun getFromOwnDirectory() {
-        try {
-            val cloneList: MutableList<StatusModel> = ArrayList()
-            if (dirImages.isDirectory) {
-                val listFile = dirImages.listFiles()
-                listFile?.let {
-                    Arrays.sort(it, LastModifiedFileComparator.LASTMODIFIED_REVERSE)
-                    for (value in it) {
-                        if (value.isFile) {
-                            val model = StatusModel()
-                            model.filepath = value.absolutePath
-                            cloneList.add(model)
-                        }
-                    }
+            emptyLayout.visibility = View.GONE
+            val imageModels = imageFiles.map { file ->
+                StatusModel().apply {
+                    filepath = file.absolutePath
+                    type = "image"
                 }
             }
-            whatsapp_image.postValue(cloneList)
-        } catch (_: Exception) {
+            adapter = PhotoAdapter(imageModels, this)
+            binding.contentRecycler.adapter = adapter
         }
     }
 
-    private fun copyFile(sourceFile: File?, destFile: File) {
-        if (!destFile.parentFile?.exists()!!) {
-            if (!destFile.parentFile?.mkdirs()!!) {
-                Log.e(TAG, "Failed to create parent directory: ${destFile.parentFile.absolutePath}")
-                return
-            }
-        }
+    private fun setupRecyclerView() {
+        adapter = PhotoAdapter(emptyList(),this)
 
-        if (!destFile.exists()) {
-            if (!destFile.createNewFile()) {
-                Log.e(TAG, "Failed to create file: ${destFile.absolutePath}")
-                return
-            }
-        }
-
-        var source: FileChannel? = null
-        var destination: FileChannel? = null
-        try {
-            source = FileInputStream(sourceFile).channel
-            destination = FileOutputStream(destFile).channel
-            destination.transferFrom(source, 0, source.size())
-        } finally {
-            source?.close()
-            destination?.close()
-        }
-    }
-
-    private fun startDataTransferService() {
-        val serviceIntent = Intent(this, DataTransferService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent)
-        } else {
-            startService(serviceIntent)
+        binding.contentRecycler.apply {
+            layoutManager = GridLayoutManager(this@ImagesActivity, 3) // 3 columns
+            adapter = adapter
         }
     }
 }
+
 
 
 

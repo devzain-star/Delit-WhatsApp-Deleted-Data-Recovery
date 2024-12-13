@@ -25,9 +25,9 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
+import com.recover.deleted.messages.chat.recovery.data.DeletedMediaManager
 import com.recover.deleted.messages.chat.recovery.data.WhatsAppStatusRepository
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityMainBinding
-import com.recover.deleted.messages.chat.recovery.services.DataTransferService
 import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_PREFS
 import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_STATUS_PREFS
 import com.recover.deleted.messages.chat.recovery.utils.Constants.REQUEST_CODE_UPDATE
@@ -74,23 +74,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             insets
         }
 
+        val mediaManager = DeletedMediaManager(this)
+        mediaManager.startBackgroundScanning()
         analytics = Firebase.analytics
         init()
         checkForAppUpdate()
         setupStatuses()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(
-                    arrayOf(android.Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC),
-                    REQUEST_CODE_FOREGROUND_SERVICE
-                )
-            } else {
-                startMyForegroundService()
-            }
-        } else {
-            startMyForegroundService()
-        }
+
 
     }
 
@@ -193,31 +184,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         activity?.let { screens.showCustomScreen(it) }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_FOREGROUND_SERVICE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
-                startMyForegroundService()
-            } else {
-                // Permission denied
-                Toast.makeText(this, "Permission required to sync data", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun startMyForegroundService() {
-        val intent = Intent(this, DataTransferService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
-    }
 
 
 }

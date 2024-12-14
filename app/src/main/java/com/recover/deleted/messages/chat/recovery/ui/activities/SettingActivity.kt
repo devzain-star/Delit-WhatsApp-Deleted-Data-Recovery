@@ -49,8 +49,8 @@ class SettingActivity : BaseActivity() {
     fun contactUs() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("support@yourapp.com"))
-            putExtra(Intent.EXTRA_SUBJECT, "Contact Us: Your App Name")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("brocatechmarketing@gmail.com"))
+            putExtra(Intent.EXTRA_SUBJECT, "Contact Us: Delit")
         }
 
         if (intent.resolveActivity(packageManager) != null) {

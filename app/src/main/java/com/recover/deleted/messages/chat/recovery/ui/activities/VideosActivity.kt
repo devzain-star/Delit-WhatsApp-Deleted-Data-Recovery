@@ -4,10 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.PhotoAdapter
@@ -30,8 +26,7 @@ class VideosActivity : BaseActivity() {
 
         emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.videos))
-        val mediaManager = DeletedMediaManager(this)
-        mediaManager.scanWhatsAppMedia("video", mediaManager.dirVideos)
+
         // Initialize DeletedMediaManager
         deletedMediaManager = DeletedMediaManager(this)
 
@@ -41,44 +36,27 @@ class VideosActivity : BaseActivity() {
     }
 
     private fun loadDeletedVideos() {
-        val appInstallTime = getAppInstallTime()
-        Log.d("AppInstallTime", "loadDeletedVideos: "+appInstallTime)
-        val videosDir = File(getExternalFilesDir(null), "${getString(R.string.app_name)}/Videos")
-        val videoFiles = videosDir.listFiles()?.filter { file ->
-            file.isFile && file.lastModified() >= appInstallTime
-        }?.sortedByDescending { it.lastModified() } ?: emptyList()
+        val videoFiles: List<File> = deletedMediaManager.dirVideos.listFiles()?.toList() ?: emptyList()
+
+        val videoData: List<StatusModel> = videoFiles.map { file ->
+            StatusModel().apply {
+                filepath = file.absolutePath
+                type = "video"
+            }
+        }
 
         if (videoFiles.isEmpty()) {
+            binding.contentRecycler.visibility = View.GONE
             emptyLayout.visibility = View.VISIBLE
         } else {
+            binding.contentRecycler.visibility = View.VISIBLE
             emptyLayout.visibility = View.GONE
-            val videoModels = videoFiles.map { file ->
-                StatusModel().apply {
-                    filepath = file.absolutePath
-                    type = "video"
-                }
-            }
-            adapter = PhotoAdapter(videoModels, this)
-            binding.contentRecycler.adapter = adapter
         }
+        adapter = PhotoAdapter(videoData, this)
+        binding.contentRecycler.adapter = adapter
     }
-
 
     private fun setupRecyclerView() {
-        adapter = PhotoAdapter(emptyList(),this)
-
-        binding.contentRecycler.apply {
-            layoutManager = GridLayoutManager(this@VideosActivity, 3) // 3 columns
-            adapter = adapter
-        }
-    }
-
-    fun getAppInstallTime(): Long {
-        return try {
-            packageManager.getPackageInfo(packageName, 0).firstInstallTime
-        } catch (e: Exception) {
-            Log.e("AppInstallTime", "Error getting app install time: ${e.message}")
-            System.currentTimeMillis() // Fallback to current time if install time retrieval fails
-        }
+        binding.contentRecycler.layoutManager = GridLayoutManager(this, 3) // 3 columns
     }
 }

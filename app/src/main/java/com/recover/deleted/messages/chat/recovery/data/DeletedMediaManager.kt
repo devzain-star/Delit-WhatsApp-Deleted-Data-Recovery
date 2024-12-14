@@ -22,8 +22,8 @@ class DeletedMediaManager(private val context: Context) {
         val appInstallTime = getAppInstallTime()
         val mediaUri = if (type == "image") MediaStore.Images.Media.EXTERNAL_CONTENT_URI else MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DATE_ADDED)
-        val selection = "${MediaStore.MediaColumns.DATA} LIKE ?"
-        val selectionArgs = arrayOf("%WhatsApp%")
+        val selection = "${MediaStore.MediaColumns.DATA} LIKE ? AND ${MediaStore.MediaColumns.DATE_ADDED} > ?"
+        val selectionArgs = arrayOf("%WhatsApp%", (appInstallTime / 1000).toString()) // DATE_ADDED uses seconds
 
         val cursor = context.contentResolver.query(
             mediaUri, projection, selection, selectionArgs, "${MediaStore.MediaColumns.DATE_ADDED} DESC"
@@ -33,7 +33,7 @@ class DeletedMediaManager(private val context: Context) {
             while (it.moveToNext()) {
                 val filePath = it.getString(it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA))
                 val file = File(filePath)
-                if (file.exists() && file.lastModified() >= appInstallTime && filePath !in getFileSet(type)) {
+                if (file.exists() && filePath !in getFileSet(type)) {
                     transferFileIfNeeded(file, targetDir)
                 }
             }

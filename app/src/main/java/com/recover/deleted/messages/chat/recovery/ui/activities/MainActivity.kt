@@ -100,7 +100,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun scheduleMediaScanWorker() {
         val workRequest = PeriodicWorkRequestBuilder<MediaScanWorker>(12, TimeUnit.HOURS)
             .build()
-
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "MediaScanWork",
             androidx.work.ExistingPeriodicWorkPolicy.KEEP,

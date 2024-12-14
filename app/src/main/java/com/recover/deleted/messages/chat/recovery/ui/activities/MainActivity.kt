@@ -82,14 +82,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         init()
         checkForAppUpdate()
         setupStatuses()
-        binding.options.setOnClickListener{
+        binding.options.setOnClickListener {
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
-
-
-
-
     }
 
     override fun onResume() {
@@ -109,6 +105,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun init() {
+
         binding.apply {
             fabBtn.setOnClickListener(this@MainActivity)
             chats.setOnClickListener(this@MainActivity)
@@ -131,7 +128,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         binding.apply {
             day.text = currentDate.format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault()))
             date.text =
-                currentDate.format(DateTimeFormatter.ofPattern("MMMM d\nyyyy", Locale.getDefault()))
+                currentDate.format(DateTimeFormatter.ofPattern("MMMM dd\nyyyy", Locale.getDefault()))
             greetingText.text = when (currentHour) {
                 in 5..11 -> "Good Morning"
                 in 12..17 -> "Good Afternoon"
@@ -200,7 +197,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
         activity?.let { screens.showCustomScreen(it) }
     }
-
 
 
 }

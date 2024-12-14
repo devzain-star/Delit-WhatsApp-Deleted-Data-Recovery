@@ -20,9 +20,11 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_toEndOf="@+id/back"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:fontFamily="@font/bold"
         android:gravity="center"
         android:text="@string/title"

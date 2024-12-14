@@ -22,7 +22,6 @@
         android:layout_margin="@dimen/_5sdp" />
 
     <RelativeLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/empty_lay" />

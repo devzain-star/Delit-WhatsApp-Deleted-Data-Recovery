@@ -38,7 +38,7 @@ class SettingActivity : BaseActivity() {
 
     }
 
-    fun setInsets() {
+    private fun setInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -46,7 +46,7 @@ class SettingActivity : BaseActivity() {
         }
     }
 
-    fun contactUs() {
+    private fun contactUs() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf("brocatechmarketing@gmail.com"))
@@ -54,13 +54,13 @@ class SettingActivity : BaseActivity() {
         }
 
         if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
+            startActivity(Intent.createChooser(intent, "Send email..."))
         } else {
             Toast.makeText(this, "No email app found", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun shareApp() {
+    private fun shareApp() {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             val appPackageName = packageName

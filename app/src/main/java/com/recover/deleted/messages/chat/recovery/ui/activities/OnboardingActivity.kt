@@ -1,7 +1,6 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.recover.deleted.messages.chat.recovery.R
 import com.recover.deleted.messages.chat.recovery.adapters.OnboardingAdapter
 import com.recover.deleted.messages.chat.recovery.base.BaseActivity
 import com.recover.deleted.messages.chat.recovery.databinding.ActivityOnboardingBinding
-import com.recover.deleted.messages.chat.recovery.services.NotificationForegroundService
 
 class OnboardingActivity : BaseActivity() {
 
@@ -36,10 +34,13 @@ class OnboardingActivity : BaseActivity() {
 
         onboardingAdapter = OnboardingAdapter(this)
         binding.viewPager.adapter = onboardingAdapter
+        binding.viewPager.isUserInputEnabled = false
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->{
-            tab.customView = createTabDot(binding.tabLayout, position == 0)
-        }}.attach()
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            run {
+                tab.customView = createTabDot(binding.tabLayout, position == 0)
+            }
+        }.attach()
 
         for (i in 0 until binding.tabLayout.tabCount){
             val tab = binding.tabLayout.getTabAt(i)

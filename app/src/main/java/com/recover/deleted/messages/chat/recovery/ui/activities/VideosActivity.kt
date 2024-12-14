@@ -30,7 +30,8 @@ class VideosActivity : BaseActivity() {
 
         emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.videos))
-
+        val mediaManager = DeletedMediaManager(this)
+        mediaManager.scanWhatsAppMedia("video", mediaManager.dirVideos)
         // Initialize DeletedMediaManager
         deletedMediaManager = DeletedMediaManager(this)
 

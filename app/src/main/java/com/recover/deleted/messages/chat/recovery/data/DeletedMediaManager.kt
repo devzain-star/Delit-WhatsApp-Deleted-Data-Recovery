@@ -73,5 +73,3 @@ class DeletedMediaManager(private val context: Context) {
         }
     }
 }
-
-

@@ -51,6 +51,8 @@ class ImagesActivity : BaseActivity() {
 
         emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.images))
+        val mediaManager = DeletedMediaManager(this)
+        mediaManager.scanWhatsAppMedia("image", mediaManager.dirImages)
 
         // Initialize DeletedMediaManager
         deletedMediaManager = DeletedMediaManager(this)

@@ -16,6 +16,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -33,10 +35,12 @@ import com.recover.deleted.messages.chat.recovery.utils.Constants.DELIT_STATUS_P
 import com.recover.deleted.messages.chat.recovery.utils.Constants.REQUEST_CODE_UPDATE
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModel
 import com.recover.deleted.messages.chat.recovery.viewModel.StatusViewModelFactory
+import com.recover.deleted.messages.chat.recovery.workers.MediaScanWorker
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -73,13 +77,16 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        /*val mediaManager = DeletedMediaManager(this)
-        mediaManager.startBackgroundScanning()*/
+        scheduleMediaScanWorker()
         analytics = Firebase.analytics
         init()
         checkForAppUpdate()
         setupStatuses()
+        binding.options.setOnClickListener{
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
 
@@ -88,6 +95,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         setupStatuses()
+    }
+
+    private fun scheduleMediaScanWorker() {
+        val workRequest = PeriodicWorkRequestBuilder<MediaScanWorker>(12, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "MediaScanWork",
+            androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

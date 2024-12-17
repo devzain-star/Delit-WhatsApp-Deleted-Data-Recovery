@@ -71,7 +71,7 @@ class SettingActivity : BaseActivity() {
         startActivity(Intent.createChooser(shareIntent, "Share App via"))
     }
 
-    fun rateUs() {
+    private fun rateUs() {
         val appPackageName = packageName
         try {
             startActivity(

@@ -16,7 +16,6 @@ class Utils {
     companion object {
         private const val VIDEO_EXTENSIONS = "mp4|webm|ogg|mpK|avi|mkv|flv|mpg|wmv|vob|ogv|mov|qt|rm|rmvb|asf|m4p|m4v|mp2|mpeg|mpe|mpv|m2v|3gp|f4p|f4a|f4b|f4v"
 
-        // Scans new media files so they appear in the gallery
         fun mediaScanner(context: Context, filePath: String, mimeType: String) {
             MediaScannerConnection.scanFile(
                 context,
@@ -31,20 +30,17 @@ class Utils {
             return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "application/octet-stream"
         }
 
-        // Checks if a file is a video based on its extension
         fun isVideoFile(path: String?): Boolean {
             return path?.let {
                 it.lowercase().matches(".*\\.($VIDEO_EXTENSIONS)$".toRegex())
             } ?: false
         }
 
-        // Checks if a file is an image
         fun isImageFile(path: String?): Boolean {
             val mimeType = URLConnection.guessContentTypeFromName(path)
             return mimeType?.startsWith("image") == true
         }
 
-        // Downloads a file by copying it into a specified directory
         fun downloadFile(context: Context, sourcePath: String?): Boolean {
             return try {
                 val destinationDir = if (isImageFile(sourcePath)) {
@@ -68,7 +64,6 @@ class Utils {
             }
         }
 
-        // Gets a directory for storing app data (images/videos)
         fun getDir(context: Context, folder: String): File {
             val rootDir = File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
@@ -78,7 +73,6 @@ class Utils {
             return rootDir
         }
 
-        // Gets the current timestamp
         fun getCurrentTimestamp(): Long {
             return System.currentTimeMillis()
         }

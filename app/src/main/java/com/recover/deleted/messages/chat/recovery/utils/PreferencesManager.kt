@@ -34,11 +34,9 @@ class PreferencesManager(context: Context) {
 
     init {
 
-        // For new installs, enable all the supported apps
         val newInstall = (!sharedPreferences.contains(KEY_SERVICE_ENABLED)
                 && !sharedPreferences.contains(KEY_SELECTED_APPS_ARR))
         if (newInstall) {
-            // Set notifications ON for new installs
             setShowNotificationPref(true)
         }
 

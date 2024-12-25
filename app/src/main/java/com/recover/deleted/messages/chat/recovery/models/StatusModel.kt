@@ -4,10 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class StatusModel() : Parcelable {
-    var id: Int? = null                       // Unique ID for each status (optional)
-    var filepath: String? = null              // Path or URI of the status
-    var type: String? = null                  // Type of status: "image" or "video"
-    var selected: Boolean = false             // Whether the status is selected
+    var id: Int? = null
+    var filepath: String? = null
+    var type: String? = null
+    var selected: Boolean = false
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readValue(Int::class.java.classLoader) as? Int

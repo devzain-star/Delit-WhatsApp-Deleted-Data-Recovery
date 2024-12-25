@@ -32,7 +32,6 @@ class PhotoAdapter(val data : List<StatusModel>, val context: Context) :
         holder.binding.play.visibility = View.GONE
         Glide.with(context).load(model.filepath).override(200, 200)
             .into(holder.binding.gridImageVideo)
-        Log.d("FileModel", "onBindViewHolder: "+model.filepath)
 
         holder.binding.root.setOnClickListener {
             val intent = Intent(context, PreviewActivity::class.java)

@@ -63,18 +63,15 @@ class StatusActivity : BaseActivity() {
     private fun observeStatuses() {
         val uri = getSavedUri()
         if (uri != null) {
-            // If a URI is already saved, observe statuses
             viewModel.getStatusesFromUri(uri).observe(this) { statuses ->
                 updateStatuses(statuses)
             }
         } else {
-            // If no URI is saved, prompt the user to select the folder
             Toast.makeText(this, "Please select the WhatsApp Status folder.", Toast.LENGTH_SHORT).show()
             showHelpDialog()
         }
     }
 
-    // Update RecyclerView with new data
     private fun updateStatuses(statuses: List<StatusModel>) {
         Log.d("statusList", "updateStatuses: "+statuses.size)
          statuses.forEach { status ->
@@ -95,7 +92,7 @@ class StatusActivity : BaseActivity() {
         folderPickerLauncher.launch(null)
     }
 
-    // Handle the result of folder selection
+
     private val folderPickerLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
             if (uri != null) {
@@ -105,7 +102,6 @@ class StatusActivity : BaseActivity() {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
                 saveUriToPreferences(uri)
-                // Observe statuses from the selected folder
                 viewModel.getStatusesFromUri(uri).observe(this) { statuses ->
                     updateStatuses(statuses)
                 }
@@ -114,13 +110,11 @@ class StatusActivity : BaseActivity() {
             }
         }
 
-    // Save the folder URI to SharedPreferences
     private fun saveUriToPreferences(uri: Uri) {
         val prefs = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
         prefs.edit().putString(DELIT_STATUS_PREFS, uri.toString()).apply()
     }
 
-    // Retrieve the saved folder URI from SharedPreferences
     private fun getSavedUri(): Uri? {
         val prefs = getSharedPreferences(DELIT_PREFS, MODE_PRIVATE)
         val uriString = prefs.getString(DELIT_STATUS_PREFS, null)
@@ -128,7 +122,6 @@ class StatusActivity : BaseActivity() {
     }
 
     private fun showHelpDialog() {
-        // Creating an attractive dialog to guide the user
         val dialogBuilder = MaterialAlertDialogBuilder(this)
         dialogBuilder.apply {
             setTitle("Grant Access to Status Folder")
@@ -139,9 +132,9 @@ class StatusActivity : BaseActivity() {
                 3. Grant permission for our app to read and write to this folder.
                 """
             )
-            setIcon(R.drawable.info) // Add a helpful icon (you can customize this)
-            setPositiveButton("Allow Access") { dialog, _ ->
-                openFolderPicker() // Open folder picker if the user chooses to grant access
+            setIcon(R.drawable.info)
+            setPositiveButton("Allow Access") { _, _ ->
+                openFolderPicker()
             }
             setNegativeButton("Cancel") { dialog, _ ->
                 screens.showToast("Access Denied")

@@ -13,44 +13,44 @@ import com.recover.deleted.messages.chat.recovery.ui.fragments.PermissionFragmen
 
 class OnboardingAdapter (activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 7 // Number of onboarding screens
+    override fun getItemCount(): Int = 7
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> OnboardingFragment.Companion.newInstance(
+            0 -> OnboardingFragment.newInstance(
                 R.drawable.one,
                 "Welcome 👋🏼",
                 "Recover deleted chats, images, videos, and statuses."
             )
-            1 -> OnboardingFragment.Companion.newInstance(
+            1 -> OnboardingFragment.newInstance(
                 R.drawable.recover,
                 "Recover Data",
                 "Retrieve deleted chats, media, and more."
             )
-            2 -> OnboardingFragment.Companion.newInstance(
+            2 -> OnboardingFragment.newInstance(
                 R.drawable.status,
                 "Download Status",
                 "You can now download and save statuses."
             )
-            3 -> PermissionFragment.Companion.newInstance(
+            3 -> PermissionFragment.newInstance(
                 R.drawable.storage,
                 "Access Storage",
                 "We need access to your device storage.",
                 "storage"
             )
-            4 -> PermissionFragment.Companion.newInstance(
+            4 -> PermissionFragment.newInstance(
                 R.drawable.background,
                 "Background Access",
                 "Allow the app to run in the background.",
                 "background"
             )
-            5 -> PermissionFragment.Companion.newInstance(
+            5 -> PermissionFragment.newInstance(
                 R.drawable.allow_notification,
                 "Allow Notifications",
                 "Stay updated with recovery notifications.",
                 "notification"
             )
-            else -> OnboardingFragment.Companion.newInstance(
+            else -> OnboardingFragment.newInstance(
                 R.drawable.one,
                 "You're Ready!",
                 "Start recovering your deleted data now."

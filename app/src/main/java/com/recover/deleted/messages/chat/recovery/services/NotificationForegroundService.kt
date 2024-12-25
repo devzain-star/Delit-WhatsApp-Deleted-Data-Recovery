@@ -27,11 +27,9 @@ class NotificationForegroundService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val notification = createNotification()
-        startForeground(1, notification)  // Start the service in the foreground with a permanent notification
+        startForeground(1, notification)
 
-        // Your service code here (e.g., monitoring notifications)
-
-        return START_STICKY  // Ensures the service is restarted if it is killed by the system
+        return START_STICKY
     }
 
     private fun createNotification(): Notification {

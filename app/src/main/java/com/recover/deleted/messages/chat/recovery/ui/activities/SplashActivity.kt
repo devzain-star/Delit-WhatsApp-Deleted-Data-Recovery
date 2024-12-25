@@ -53,7 +53,6 @@ class SplashActivity : BaseActivity() {
         if (prefManager.isFirstTime()) {
             startActivity(Intent(this, OnboardingActivity::class.java))
         } else{
-            //startService(Intent(this, NotificationForegroundService::class.java))
             startActivity(Intent(this, MainActivity::class.java))
         }
         finish()

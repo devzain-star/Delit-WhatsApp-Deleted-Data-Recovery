@@ -27,10 +27,8 @@ class VideosActivity : BaseActivity() {
         emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.videos))
 
-        // Initialize DeletedMediaManager
         deletedMediaManager = DeletedMediaManager(this)
 
-        // Load Videos
         setupRecyclerView()
         loadDeletedVideos()
     }

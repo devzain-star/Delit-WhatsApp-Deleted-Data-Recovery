@@ -1,5 +1,6 @@
 package com.recover.deleted.messages.chat.recovery.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -49,7 +50,7 @@ class SettingActivity : BaseActivity() {
     private fun contactUs() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("brocatechmarketing@gmail.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(""))
             putExtra(Intent.EXTRA_SUBJECT, "Contact Us: Delit")
         }
 
@@ -87,6 +88,16 @@ class SettingActivity : BaseActivity() {
                     Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
                 )
             )
+        }
+    }
+
+    private fun openUrlInBrowser(context: Context) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("")
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

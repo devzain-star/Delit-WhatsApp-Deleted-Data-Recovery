@@ -57,7 +57,6 @@ class ChatViewActivity : AppCompatActivity() {
             } catch (_: Exception) {
             }
 
-            //search in list
             for (model in NotificationService.notificationModels!!) {
                 if (model.name.equals(name)) {
                     notification = model.notification
@@ -167,7 +166,7 @@ class ChatViewActivity : AppCompatActivity() {
 
     fun init() {
         sqliteHelper = SqliteHelper(this)
-        list = ArrayList<ContactModel>()
+        list = ArrayList()
     }
 
     private fun sendNativeIntent(

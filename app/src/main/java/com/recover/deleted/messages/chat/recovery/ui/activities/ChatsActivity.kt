@@ -105,9 +105,8 @@ class ChatsActivity : BaseActivity(), RefreshListener {
     }
 
     class CustomComparator : Comparator<ContactModel?> {
-        // may be it would be Model
         override fun compare(o1: ContactModel?, o2: ContactModel?): Int {
-            return java.lang.String.valueOf(o1?.time)
+            return String.valueOf(o1?.time)
                 .compareTo(String.valueOf(o2?.time))
         }
     }

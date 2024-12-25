@@ -86,8 +86,7 @@ class OnboardingActivity : BaseActivity() {
 
     fun homePage() {
         prefManager.setFirstTime(false)
-        //startService(Intent(this, NotificationForegroundService::class.java))
-        startActivity(Intent(this, MainActivity::class.java))
+         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 

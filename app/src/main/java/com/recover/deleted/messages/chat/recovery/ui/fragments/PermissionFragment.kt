@@ -68,18 +68,15 @@ class PermissionFragment : Fragment() {
         Log.d(TAG, "checkAndRequestPermissions: Called")
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                // For API 33+ (Tiramisu)
                 requestStoragePermission()
                 requestNotificationPermission()
             }
 
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
-                // For API 30 to API 32 (Android 11 to 12)
-                requestStoragePermission()  // External storage access
+                requestStoragePermission()
             }
 
             else -> {
-                // For API 24 to API 29
                 requestStoragePermission()
             }
         }
@@ -95,7 +92,6 @@ class PermissionFragment : Fragment() {
 
     private fun requestStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // API 33+ request media access permissions
             if (ActivityCompat.checkSelfPermission(
                     requireContext(), READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
@@ -111,7 +107,6 @@ class PermissionFragment : Fragment() {
                 )
             }
         } else {
-            // API 24 to API 32
             if (ActivityCompat.checkSelfPermission(
                     requireContext(), READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
@@ -146,7 +141,6 @@ class PermissionFragment : Fragment() {
 
 
         if (!isNotificationAccessGranted()) {
-            // Show a dialog to inform the user
             showNotificationAccessDialog()
         } else {
             val serviceIntent = Intent(requireContext(), NotificationForegroundService::class.java)
@@ -154,7 +148,6 @@ class PermissionFragment : Fragment() {
         }
     }
 
-    // Check if the notification listener access is granted
     private fun isNotificationAccessGranted(): Boolean {
         val enabledPackages = NotificationManagerCompat.getEnabledListenerPackages(requireContext())
         return enabledPackages.contains(requireContext().packageName)
@@ -164,7 +157,6 @@ class PermissionFragment : Fragment() {
         AlertDialog.Builder(requireContext()).setTitle("Notification Access Required")
             .setMessage("To receive notifications, please enable access in settings.")
             .setPositiveButton("Go to Settings") { _, _ ->
-                // Open the notification listener settings
                 val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                 startActivity(intent)
             }.setNegativeButton("Cancel", null).show()

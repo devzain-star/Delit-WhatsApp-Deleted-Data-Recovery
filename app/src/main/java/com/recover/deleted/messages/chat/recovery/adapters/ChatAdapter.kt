@@ -71,7 +71,6 @@ class ChatAdapter(val data: List<ContactModel>, val context: Context) :
         }catch (e: Exception){
             Log.d(TAG, "onBindViewHolder: "+e.message)
             Glide.with(context).load(context.getDrawable(R.drawable.avatar)).into(holder.binding.userProfile);
-            //holder.binding.userProfile.setImageDrawable(context.getDrawable(R.drawable.avatar))
         }
 
         val id = sqliteHelper!!.getCountsDataByID(item.id)
@@ -91,7 +90,7 @@ class ChatAdapter(val data: List<ContactModel>, val context: Context) :
             holder.binding.tvTime.text = dateFormatter.format(Date(item.time))
         }
 
-        holder.binding.rootChatItem.setOnClickListener(View.OnClickListener {
+        holder.binding.rootChatItem.setOnClickListener {
             context
                 .startActivity(
                     Intent(context, ChatViewActivity::class.java)
@@ -99,7 +98,7 @@ class ChatAdapter(val data: List<ContactModel>, val context: Context) :
                         .putExtra("name", item.name)
                         .putExtra("logo", item.logo)
                 )
-        })
+        }
 
 
     }

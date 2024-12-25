@@ -29,7 +29,6 @@ class StatusAdapter(private val statusesList: List<StatusModel>, private val con
         holder.bind(status)
 
         holder.binding.root.setOnClickListener {
-            // Navigate to PreviewActivity
             val intent = Intent(context, PreviewActivity::class.java)
             intent.putExtra("status", status)
             context.startActivity(intent)
@@ -43,21 +42,18 @@ class StatusAdapter(private val statusesList: List<StatusModel>, private val con
     ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(status: StatusModel) {
-            // Check if it's a video file and set play icon visibility accordingly
-            if (Utils.isVideoFile(status.filepath)) {
+             if (Utils.isVideoFile(status.filepath)) {
                 binding.play.visibility = View.VISIBLE
             } else {
                 binding.play.visibility = View.GONE
             }
 
-            // Load the thumbnail using Glide
             Glide.with(binding.root.context)
                 .load(status.filepath)
-                .placeholder(R.drawable.placeholder) // Placeholder for better UX
-                .error(R.drawable.placeholder) // Fallback image
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(binding.gridImageVideo)
 
-            // Set click listener if needed
             binding.root.setOnClickListener {
                 Toast.makeText(
                     binding.root.context,

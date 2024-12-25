@@ -27,10 +27,8 @@ class ImagesActivity : BaseActivity() {
         emptyLayout = binding.root.findViewById(R.id.emptyLayout)
         setHeader(getString(R.string.images))
 
-        // Initialize DeletedMediaManager
         deletedMediaManager = DeletedMediaManager(this)
 
-        // Load Images
         setupRecyclerView()
         loadImages()
     }
@@ -58,6 +56,6 @@ class ImagesActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        binding.contentRecycler.layoutManager = GridLayoutManager(this, 3) // 3 columns
+        binding.contentRecycler.layoutManager = GridLayoutManager(this, 3)
     }
 }

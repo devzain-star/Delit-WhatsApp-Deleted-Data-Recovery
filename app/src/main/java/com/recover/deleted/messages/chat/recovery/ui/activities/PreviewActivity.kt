@@ -58,7 +58,7 @@ class PreviewActivity : BaseActivity() {
 
 
     private fun downloadStatus() {
-        val statusUri = Uri.parse(status.filepath) // Parse the content URI
+        val statusUri = Uri.parse(status.filepath)
         if (statusUri == null) {
             screens.showToast("Unable to download.")
             return
@@ -76,7 +76,6 @@ class PreviewActivity : BaseActivity() {
                 }
             }
 
-            // Optionally add to MediaStore to make the file visible in the gallery
             addToMediaStore(targetFile)
             screens.showToast("Status Downloaded")
         } catch (e: Exception) {
@@ -127,22 +126,19 @@ class PreviewActivity : BaseActivity() {
 
 
     private fun shareStatus() {
-        val statusUri = Uri.parse(status.filepath) // Parse the content URI
+        val statusUri = Uri.parse(status.filepath)
         if (statusUri == null) {
             Toast.makeText(this, "Status URI is null. Unable to share.", Toast.LENGTH_SHORT).show()
             return
         }
 
         try {
-            // Use content URI directly for sharing
             val mimeType = contentResolver.getType(statusUri) ?: "application/octet-stream"
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = mimeType
                 putExtra(Intent.EXTRA_STREAM, statusUri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary permission
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-
-            // Start the sharing intent
             startActivity(Intent.createChooser(shareIntent, "Share Status Via"))
         } catch (e: Exception) {
             e.printStackTrace()

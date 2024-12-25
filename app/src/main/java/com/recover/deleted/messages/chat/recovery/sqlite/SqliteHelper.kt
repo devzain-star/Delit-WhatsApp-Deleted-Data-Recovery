@@ -93,7 +93,6 @@ class SqliteHelper(val context: Context) : SQLiteOpenHelper(
 
     fun addContactID(contactModel: ContactModel): Long {
 
-        //Log.d(TAG, "addContactID: "+new Gson().toJson(contactModel));
         val db = writableDatabase
         db.beginTransaction()
         var id: Long = 0

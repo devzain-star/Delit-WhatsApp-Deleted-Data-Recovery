@@ -30,7 +30,7 @@ open class BaseActivity: AppCompatActivity() {
     fun setHeader(title: String) {
         try {
             findViewById<TextView>(R.id.title).text = title
-            findViewById<ImageView>(R.id.back).setOnClickListener(View.OnClickListener { onBackPressed() })
+            findViewById<ImageView>(R.id.back).setOnClickListener { onBackPressed() }
         } catch (_: Exception) {
         }
     }

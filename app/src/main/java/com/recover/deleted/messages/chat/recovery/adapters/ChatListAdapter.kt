@@ -75,19 +75,19 @@ class ChatListAdapter(val data: List<ContactModel>, val context: Context) :
             holder.binding.tvTime.visibility = View.VISIBLE
         }
 
-        holder.binding.tvMsgMe.setOnLongClickListener(OnLongClickListener {
+        holder.binding.tvMsgMe.setOnLongClickListener {
             val clip = ClipData.newPlainText("message", chat.text)
             clipboard!!.setPrimaryClip(clip)
             Toast.makeText(context, "text copied", Toast.LENGTH_SHORT).show()
             true
-        })
+        }
 
-        holder.binding.tvMsg.setOnLongClickListener(OnLongClickListener {
+        holder.binding.tvMsg.setOnLongClickListener {
             val clip = ClipData.newPlainText("message", chat.text)
             clipboard!!.setPrimaryClip(clip)
             Toast.makeText(context, "text copied", Toast.LENGTH_SHORT).show()
             true
-        })
+        }
 
     }
 

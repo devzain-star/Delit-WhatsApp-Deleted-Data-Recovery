@@ -8,6 +8,18 @@ Stay in control of your data with a simple, user-friendly solution.
 
 ---
 
+## Screenshots
+### App Home  
+![Home Screenshot](screenshots/home.png)
+
+### Status Saver  
+![Status Saver Screenshot](screenshots/status.png)
+
+### Deleted Messages  
+![Deleted Messages Screenshot](screenshots/chats.png)
+
+---
+
 ## Features
 - **WhatsApp Status Saver**: Save statuses from your contacts for later viewing.  
 - **Deleted Message Recovery**: Recover and view messages deleted by senders.  

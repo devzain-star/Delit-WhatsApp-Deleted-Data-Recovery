@@ -10,13 +10,13 @@ Stay in control of your data with a simple, user-friendly solution.
 
 ## Screenshots
 ### App Home  
-![Home Screenshot](screenshots/home.png)
+![Home Screenshot](screenshots/home.jpg)
 
 ### Status Saver  
-![Status Saver Screenshot](screenshots/status.png)
+![Status Saver Screenshot](screenshots/status.jpg)
 
 ### Deleted Messages  
-![Deleted Messages Screenshot](screenshots/chats.png)
+![Deleted Messages Screenshot](screenshots/chats.jpg)
 
 ---
 

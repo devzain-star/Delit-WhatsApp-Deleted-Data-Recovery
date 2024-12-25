@@ -12,7 +12,6 @@ class MediaScanWorker(context: Context, workerParams: WorkerParameters) : Worker
 
         mediaManager.scanWhatsAppMedia("image", mediaManager.dirImages)
         mediaManager.scanWhatsAppMedia("video", mediaManager.dirVideos)
-
         return Result.success()
     }
 }
